@@ -5,11 +5,10 @@ public:
         for(int i=0; i<=n; i++)
         {
             int count = 0;
-            int j=i;
-            while(j>0)
+            for(int j=0; j<32; j++)
             {
-                count++;
-                j = (j&(j-1));
+                if((i&(1<<j))!=0)
+                    count++;
             }
             ans.push_back(count);
         }
