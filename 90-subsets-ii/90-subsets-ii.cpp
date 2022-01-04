@@ -1,23 +1,24 @@
 class Solution {
 public:
-    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-        set<vector<int>> subSets;
-         int n = nums.size();
-        int numSubSets = 1<<n;
-        for(int bitmask=0; bitmask<numSubSets; bitmask++)
+    
+    void solve(vector<vector<int>>& ans, vector<int> nums, vector<int>& temp, int idx)
+    {
+        ans.push_back(temp);
+        if(idx>=nums.size()) return;
+        for(int i=idx; i<nums.size(); i++)
         {
-            vector<int> temp;
-            for(int i=0; i<n; i++)
-            {
-                if((bitmask&(1<<i))!=0)
-                    temp.push_back(nums[i]);
-            }
-            sort(temp.begin(),temp.end());
-            subSets.insert(temp);
+            if(i>idx && nums[i]==nums[i-1]) continue;
+            temp.push_back(nums[i]);
+            solve(ans,nums,temp,i+1);
+            temp.pop_back();
         }
+    }
+    
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
         vector<vector<int>> ans;
-        for(auto it:subSets)
-            ans.push_back(it);
+        vector<int> temp;
+        solve(ans,nums,temp,0);
         return ans;
     }
 };
