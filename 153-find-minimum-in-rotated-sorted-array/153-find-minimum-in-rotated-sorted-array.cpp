@@ -11,6 +11,6 @@ public:
                   hi = mid;
               }
         }
-        return num[lo];
+        return num[hi];
     }
 };
