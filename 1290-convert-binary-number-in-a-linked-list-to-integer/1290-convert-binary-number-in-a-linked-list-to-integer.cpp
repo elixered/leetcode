@@ -10,21 +10,14 @@
  */
 class Solution {
 public:
-    int solve(ListNode* head, int power)
-    {
-        if(head==NULL || power<0)
-            return 0;
 
-        return head->val*pow(2,power) + solve(head->next,power-1);
-    }
     int getDecimalValue(ListNode* head) {
-        int count  = 0;
-        ListNode* temp = head;
-        while(temp)
+        int res = 0;
+        while(head)
         {
-            count++;
-            temp = temp->next;
+            res = res*2+head->val;
+            head = head->next;
         }
-        return solve(head,count-1);
+        return res;
     }
 };
