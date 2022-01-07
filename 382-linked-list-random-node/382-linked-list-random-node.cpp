@@ -9,9 +9,9 @@ public:
     
     /** Returns a random node's value. */
     int getRandom() {
-        int res = head->val;
-        ListNode* node = head->next;
-        int i = 2;
+        int res =-9;
+        ListNode* node = head;
+        int i = 1;
         while(node){
             int j = rand()%i;
             if(j==0)
@@ -19,6 +19,7 @@ public:
             i++;
             node = node->next;
         }
+        delete node;
         return res;
     }
 };
