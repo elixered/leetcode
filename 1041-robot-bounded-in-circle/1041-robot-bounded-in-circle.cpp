@@ -3,6 +3,8 @@ public:
     bool isRobotBounded(string s) {
         unordered_map<int,int> map;
         int dir = 0;
+        for(int i=0; i<4; i++)
+        {
         for(auto c:s)
         {
              if(c=='L')
@@ -35,10 +37,9 @@ public:
             }
             }
         }
-        if(map[0]==map[2] && map[1]==map[3])
+            if(map[0]==map[2] && map[1]==map[3])
             return true;
-        if(dir!=0)
-            return true;
-        else return false;
+        }
+        return false;
     }
 };
