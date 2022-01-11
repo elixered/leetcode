@@ -3,7 +3,7 @@ public:
     int sumRootToLeafHelper(TreeNode* rt, int cur_val) {
         if(! rt) return 0;
         
-        cur_val = (cur_val << 1) | rt->val;
+        cur_val = cur_val*2+rt->val;
         
         if(!rt->left && !rt->right)
 			return cur_val;
