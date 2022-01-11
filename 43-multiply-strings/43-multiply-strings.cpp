@@ -14,14 +14,14 @@ public:
             {
                 int sum = (num2[j]-'0')*multiplier+carry+s[idx]-'0';
                 carry = sum/10;
-                s[idx] = (char)(sum%10+'0');
+                s[idx] = (sum%10+'0');
                 idx--;
             }
             while(carry>0)
             {
                 int sum = s[idx]-'0'+carry;
                 carry = sum/10;
-                s[idx] = (char)(sum%10+'0');
+                s[idx] = (sum%10+'0');
                 idx--;
             }
             counter++;
