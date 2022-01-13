@@ -1,26 +1,27 @@
 class Solution {
 public:
-    
-    void solve(vector<vector<int>>&ans, int begin,vector<int> nums)
-    {
-        if(begin>=nums.size())
-        {
-            ans.push_back(nums);
-            return;
-        }
+      void helper(vector<vector<int>>& res, vector<int>& nums, int pos) {
         
-        for(int i=begin; i<nums.size(); i++)
-        {
-            if(i>begin && nums[i]==nums[begin]) continue;
-            swap(nums[begin],nums[i]);
-            solve(ans,begin+1,nums);
+        if (pos == nums.size()) {
+            res.push_back(nums);
+        } else {
+            for (int i = pos; i < nums.size(); ++i) {
+                if (i > pos && nums[i] == nums[pos]) continue;
+                swap(nums[pos], nums[i]);
+                helper(res, nums, pos + 1);
+
+            }
+            // restore nums
+            for (int i = nums.size() - 1; i > pos; --i) {
+                swap(nums[pos], nums[i]);
+            }
         }
     }
-    
+
     vector<vector<int>> permuteUnique(vector<int>& nums) {
-        vector<vector<int>> ans;
-        sort(nums.begin(),nums.end());
-        solve(ans,0,nums);
-        return ans;
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> res;
+        helper(res, nums, 0);
+        return res;
     }
 };
