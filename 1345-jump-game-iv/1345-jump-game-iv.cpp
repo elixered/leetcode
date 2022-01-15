@@ -9,7 +9,7 @@ public:
             graph[arr[i]].push_back(i);
         queue<int> q;
         q.push(0);
-        vector<int> visited(n,0);
+        vector<bool> visited(n,0);
         visited[0] = 1;
         int jumps = 0;
         while(!q.empty())
@@ -31,12 +31,12 @@ public:
                     q.push(curr+1);
                     visited[curr+1] = 1;
                 }
-                for(auto it:graph[arr[curr]])
+                for(auto& it:graph[arr[curr]])
                 {
                     if(!visited[it])
                         q.push(it);
                 }
-               graph[arr[curr]] = {};
+                graph[arr[curr]] = {};
             }
             jumps++;
         }
