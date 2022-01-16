@@ -4,9 +4,11 @@ public:
         sort(nums.begin(),nums.end());
         int ans = 0;
         int n = nums.size();
-        int median = nums[n/2];
-        for(auto it:nums)
-            ans += abs(it-median);
+        int low=0,high=n-1;
+        while(low<=high)
+        {
+            ans += nums[high--]-nums[low++];
+        }
         return ans;
     }
 };
