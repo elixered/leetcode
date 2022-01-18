@@ -12,12 +12,14 @@ public:
             int j = i;
             while(j<n && flower[j]==flower[i])
                 j++;
-           int total = j-i;
+            int total = j-i;
             if(i!=0)
                 total--;
             if(j!=n)
                 total--;
             res += (total+1)/2;
+            if(res>=k)
+                return true;
             i = j-1;
         }
         return res>=k;
