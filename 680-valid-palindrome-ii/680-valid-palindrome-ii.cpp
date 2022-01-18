@@ -1,8 +1,7 @@
 class Solution {
 public:
-    bool solve(string s)
+    bool solve(string s,int i, int j)
     {
-        int i=0,j=s.size()-1;
         while(i<j)
         {
             if(s[i++]!=s[j--])
@@ -23,9 +22,8 @@ public:
             }
             else
             {
-               string s1 = s.substr(i,j-i);
-                string s2 = s.substr(i+1,j-i);
-                return solve(s1) or solve(s2);
+               
+                return solve(s,i,j-1) or solve(s,i+1,j);
             }
         }
         return true;
