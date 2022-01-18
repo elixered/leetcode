@@ -8,10 +8,11 @@ public:
             int j=0, k = n-1;
             while(j<k)
             {
+                image[i][j] = 1-image[i][j];
+                image[i][k] = 1-image[i][k];
                 swap(image[i][j++],image[i][k--]);
             }
-            for(j=0; j<n; j++)
-                image[i][j] = 1-image[i][j];
+          if(j==k) image[i][j] = 1-image[i][j];
         }
         return image;
     }
