@@ -17,8 +17,8 @@ public:
         return ans;
     }
     int minOperations(string s) {
-        string t = s;
-        t[0] = s[0]=='1'?'0':'1';
-        return min(solve(s),solve(t)+1);
+       
+       
+        return min(solve(s),(int)s.size()-solve(s));
     }
 };
