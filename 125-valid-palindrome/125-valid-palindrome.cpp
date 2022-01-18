@@ -1,7 +1,7 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        transform(s.begin(),s.end(),s.begin(),::tolower);
+       
         string t = s;
         int i=0,j=t.size()-1;
         while(i<j)
@@ -11,7 +11,7 @@ public:
             else if(!isalnum(t[j]))
                 j--;
             else
-            if(t[i++]!=t[j--])
+            if(tolower(t[i++])!=tolower(t[j--]))
                 return false;
         }
         return true;
