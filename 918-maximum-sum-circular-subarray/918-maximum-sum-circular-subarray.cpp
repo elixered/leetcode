@@ -1,27 +1,25 @@
 class Solution {
 public:
-    int maxSubarraySumCircular(vector<int>& nums) {
-        int maxi = nums[0];
-        int curr_max = nums[0];
-        if(curr_max<0)
-            curr_max = 0;
-        int n = nums.size();
-        int mini = nums[0];
-        int curr_min = nums[0];
-        if(curr_min>0)
-            curr_min = 0;
-        int t = nums[0];
-        for(int i=1; i<n; i++)
-        {
-            t += nums[i];
-            maxi = max(curr_max+nums[i],maxi);
-            curr_max = max(curr_max+nums[i],0);
-            mini = min(curr_min+nums[i],mini);
-            curr_min = min(curr_min+nums[i],0);
+    int maxSubarraySumCircular(vector<int>& A) {
+	    // add tow lines below can make it faster than 98.7%
+	    ios::sync_with_stdio(false);
+        cin.tie(0);
+        vector<int> A2(A);
+        for (auto a : A) A2.push_back(a);
+        vector<long long> presum = {INT_MIN};
+        for (auto a : A2) presum.push_back(presum[presum.size()-1] + a);
+        long long res = A[0];
+        deque<int> d;
+        for (int i = 1; i < presum.size(); i++) {
+            // delete invalid left index
+            while (!d.empty() && i - d.front() > A.size()) d.pop_front();
+            // check the answer before keeping deque increament
+            if (!d.empty() && i != d.front()) res = max(res, presum[i] - presum[d.front()]);
+            // keeping increament
+            while (!d.empty() && presum[d.back()] > presum[i]) d.pop_back();
+            // push into it
+            d.push_back(i);
         }
-        cout<<t<<" "<<maxi<<" "<<mini;
-        if(t==mini)
-            return maxi;
-        else return max(maxi,t-mini);
+        return res;
     }
 };
