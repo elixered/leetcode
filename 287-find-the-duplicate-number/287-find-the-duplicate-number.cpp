@@ -5,12 +5,9 @@ public:
         for(int i=0; i<n; i++)
         {
             int dest = nums[i]-1;
-            while(i!=dest)
-            {
-                if(nums[i]==nums[dest]) return nums[i];
-                swap(nums[i],nums[dest]);
-                dest = nums[i]-1;
-            }
+            if(nums[i]==nums[dest])
+                continue;
+            swap(nums[i--],nums[dest]);
         }
         return nums.back();
     }
