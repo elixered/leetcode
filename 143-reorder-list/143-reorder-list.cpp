@@ -30,7 +30,8 @@ public:
             lt = lt->next;
             rt = rt->next->next;
         }
-        if(prev)
+        prev = lt;
+        lt = lt->next;
         prev->next = NULL;
         lt = reverse(lt);
         rt = head;
@@ -40,7 +41,6 @@ public:
             ListNode* nex = rt->next;
             lt = lt->next;
             rt->next = temp;
-            if(nex)
             temp->next = nex;
             rt = nex;
         }
