@@ -10,28 +10,39 @@
  */
 class Solution {
 public:
+    
+    ListNode* reverse(ListNode* head)
+    {
+        if(!head or !head->next) return head;
+        ListNode* reversed = reverse(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return reversed;
+    }
+    
     void reorderList(ListNode* head) {
         if(!head or !head->next)
             return;
-        vector<ListNode*> vec;
-        ListNode* temp = head;
-        while(temp!=NULL)
+        ListNode* rt = head, *lt = head,*prev=NULL;
+        while(rt && rt->next)
         {
-            vec.push_back(temp);
-            temp = temp->next;
+            prev = lt;
+            lt = lt->next;
+            rt = rt->next->next;
         }
-        int i=0,j=vec.size()-1;
-        while(i<j-1)
+        if(prev)
+        prev->next = NULL;
+        lt = reverse(lt);
+        rt = head;
+        while(lt && rt)
         {
-            ListNode* last = vec[j];
-            ListNode* prev_last = vec[j-1];
-            ListNode *first = vec[i];
-            ListNode *next = vec[i+1];
-            first->next = last;
-            last->next = next;
-            prev_last->next = NULL;
-            i++;
-            j--;
+            ListNode* temp = lt;
+            ListNode* nex = rt->next;
+            lt = lt->next;
+            rt->next = temp;
+            if(nex)
+            temp->next = nex;
+            rt = nex;
         }
         return;
     }
