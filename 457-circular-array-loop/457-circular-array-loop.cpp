@@ -19,7 +19,7 @@ public:
                 fast = next(nums,next(nums,fast));
                 if(slow==fast){
                     if(slow==next(nums,slow)) // single length
-                        return false;
+                        break;
                     return true;
                 }
             }
