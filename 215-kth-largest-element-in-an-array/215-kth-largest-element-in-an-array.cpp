@@ -3,6 +3,9 @@ public:
     
     int partition(int i, int j, vector<int>& nums, int& k)
     {
+        if(i==j) return i;
+        int r = i+rand()%(j-i);
+        swap(nums[r],nums[j]);
         int pivot = nums[j];
         int low = i-1;
         for(int high=i; high<j; high++)
