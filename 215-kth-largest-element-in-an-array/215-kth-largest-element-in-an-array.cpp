@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    int partition(int i, int j, vector<int>& nums, int k)
+    int partition(int i, int j, vector<int>& nums, int& k)
     {
         int pivot = nums[j];
         int low = i-1;
@@ -18,7 +18,7 @@ public:
         return low;
     }
     
-    int solve(int i,int j, vector<int>& nums, int k)
+    int solve(int i,int j, vector<int>& nums, int& k)
     {
         if(i>j)
             return -1;
@@ -29,8 +29,9 @@ public:
         else return solve(i,idx-1,nums,k);
     }
     
-    int findKthLargest(vector<int>& nums, int k) {
+    int findKthLargest(vector<int>& nums, int& k) {
         int n = nums.size();
-        return solve(0,n-1,nums,n-k);
+        k=n-k;
+        return solve(0,n-1,nums,k);
     }
 };
