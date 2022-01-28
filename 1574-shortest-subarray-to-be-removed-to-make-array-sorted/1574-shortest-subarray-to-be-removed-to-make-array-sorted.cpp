@@ -10,10 +10,17 @@ public:
         if(j<=i)
             return 0;
         int ans = min(n-i-1,j);
-        for(int k=i; k>=0; k--)
+        int low = 0;
+        int high = j;
+        while(low<=i && high<n)
         {
-            int idx = lower_bound(nums.begin()+j,nums.end(),nums[k])-nums.begin();
-            ans = min(ans,idx-k-1);
+            if(nums[low]<=nums[high])
+            {
+                ans = min(ans,high-low-1);
+                low++;
+            }
+            else
+                high++;
         }
         return ans;
     }
