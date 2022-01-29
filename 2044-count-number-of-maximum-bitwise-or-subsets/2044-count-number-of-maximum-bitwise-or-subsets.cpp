@@ -7,7 +7,7 @@ public:
         for(auto& it:nums)
             maxi = maxi|it;
         int count = 0;
-        for(int bitmask=1; bitmask<total; bitmask++)
+        for(int bitmask=1; bitmask<total; ++bitmask)
         {
             int temp = 0;
             for(int i=0; i<n; i++)
