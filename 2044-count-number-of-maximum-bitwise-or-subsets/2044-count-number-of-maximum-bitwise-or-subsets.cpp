@@ -1,29 +1,14 @@
 class Solution {
 public:
-    int countMaxOrSubsets(vector<int>& nums) {
-        int n = nums.size();
-        int total = 1<<n;
-        int maxi = 0;
-        for(auto& it:nums)
-            maxi = maxi|it;
-        int count = 0;
-        int dp[total];
-        memset(dp,0,sizeof(dp));
-        for(int bitmask=1; bitmask<total; ++bitmask)
-        {
-            int lowbit;
-            for(int i=0; i<32; i++)
-            {
-                if((bitmask&(1<<i))!=0)
-                {
-                    lowbit = i;
-                    break;
-                }
-            }
-            dp[bitmask] = dp[(bitmask&~(1<<lowbit))] | nums[lowbit];
-            if(dp[bitmask]==maxi)
-                count++;
+    int countMaxOrSubsets(vector<int>& A) {
+        int goal = 0, N = A.size(), ans = 0;
+        vector<int> dp(1 << N);
+        for (int n : A) goal |= n;
+        for (int m = 1; m < 1 << N; ++m) {
+            int lowbit = m & -m;
+            dp[m] = dp[m - lowbit] | A[__builtin_ctz(lowbit)];
+            if (dp[m] == goal) ++ans;
         }
-        return count;
+        return ans;
     }
 };
