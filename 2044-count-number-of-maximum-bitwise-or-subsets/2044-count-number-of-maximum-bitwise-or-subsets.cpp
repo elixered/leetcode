@@ -2,12 +2,13 @@ class Solution {
 public:
     int countMaxOrSubsets(vector<int>& nums) {
         int n = nums.size();
-        const int total = 1<<n;
+        int total = 1<<n;
         int maxi = 0;
         for(auto& it:nums)
             maxi = maxi|it;
         int count = 0;
-        vector<int> dp(total,0);
+        int dp[total];
+        memset(dp,0,sizeof(dp));
         for(int bitmask=1; bitmask<total; ++bitmask)
         {
             int lowbit;
