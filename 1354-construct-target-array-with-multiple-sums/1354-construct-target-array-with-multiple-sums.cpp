@@ -35,9 +35,9 @@ bool isPossible(vector<int>& target) {
         if(sum - largest == 1){
             return true;
         }
-        
+        if(element<0) return false;
 		//if the replaced element is less than or equals zero then return false.
-        if(element % (sum - largest) <= 0){
+        if(largest % (sum - largest) <= 0){
             return false;
         }
         
