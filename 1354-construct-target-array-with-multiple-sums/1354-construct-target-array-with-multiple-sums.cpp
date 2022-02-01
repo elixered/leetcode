@@ -45,7 +45,7 @@ bool isPossible(vector<int>& target) {
         pq.push(largest % (sum - largest));
         
 		//update the sum
-        sum += element % (sum - largest) - largest;
+        sum += largest % (sum - largest) - largest;
         
     }
     return true;
