@@ -42,7 +42,7 @@ bool isPossible(vector<int>& target) {
         }
         
 		//add the replaced element to the maxHeap.
-        pq.push(element % (sum - largest));
+        pq.push(largest % (sum - largest));
         
 		//update the sum
         sum += element % (sum - largest) - largest;
