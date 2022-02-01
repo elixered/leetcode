@@ -1,53 +1,34 @@
 class Solution {
 public:
-bool isPossible(vector<int>& target) {
-    int n = target.size();
-    
-	//if there is oly one element then i must be equal to '1' for satisfy the given condition.
-    if(n == 1){
-        return target[0] == 1;
-    }
-     
-	//max heap to hold the elements in each step in reverse direction
-    priority_queue<long> pq;
-    long sum = 0;
-    
-    for(int i=0; i<n; i++){
-        sum += target[i];
-        pq.push(target[i]);
-    }
-    
-	//if the max element is equa to the sum => that there must be a zero in the array..which is not possible so return false.
-    if(pq.top() == sum){
-        return false;
-    }
-    
-	//iterale while the largest element of the array is not '1'.
-    while(pq.top() != 1){
-        
-        long largest = pq.top();
-        pq.pop();
-        
-		//the element that was repleced by the current max element in the previous array
-        long element = 2*largest - sum;
-        
-		//its an special case -> [1,1], [1,2], [1,3]....[1,n]
-        if(sum - largest == 1){
+    bool isPossible(vector<int>& target) {
+        int n = target.size();
+        if(n==1)
+            return target[0] == 1;
+        long long sum = 0;
+        priority_queue<int> pq;
+        for(int i=0; i<target.size(); i++)
+        {
+            int it = target[i];
+            pq.push(it);
+            sum += it;
+        }
+        while(pq.top()!=1)
+        {
+            long first = pq.top();
+            pq.pop();
+            long rest = sum-first;
+            if(rest==1) return true;
+            long element = first-rest;
+            if(element<=0) return false;
+            if(element%(rest)<=0) return false;
+            pq.push(element%(rest));
+            sum += element%rest - first;
+        }
+        while(!pq.empty())
+        {
+            if(pq.top()!=1) return false;
+            pq.pop();
+        }
             return true;
-        }
-        if(element<0) return false;
-		//if the replaced element is less than or equals zero then return false.
-        if(largest % (sum - largest) <= 0){
-            return false;
-        }
-        
-		//add the replaced element to the maxHeap.
-        pq.push(largest % (sum - largest));
-        
-		//update the sum
-        sum += largest % (sum - largest) - largest;
-        
     }
-    return true;
-}
 };
