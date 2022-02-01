@@ -1,38 +1,39 @@
 class Solution {
 public:
-     int memo[1001][51];
     
-    int solve(vector<int>& prefix, int idx, int m)
+    int check(vector<int>& nums, int maxi, int m)
     {
-        int n = prefix.size()-1;
-        if(memo[idx][m]!=-1)
-            return memo[idx][m];
-        if(m==1)
+        int count = 0;
+        int curr = 0;
+        for(auto it:nums)
         {
-            return memo[idx][m] = prefix[n]-prefix[idx];
+            if(curr+it<=maxi)
+                curr+=it;
+            else
+            {
+                count++;
+                curr = it;
+            }
         }
-        int mini = INT_MAX;
-        for(int i=idx; i<=n-m; i++)
-        {
-            int firstSplitSum = prefix[i+1]-prefix[idx];
-            int largest = max(firstSplitSum,solve(prefix,i+1,m-1));
-            mini = min(mini,largest);
-            if(firstSplitSum >= mini)
-                break;
-        }
-        return memo[idx][m] = mini;
+        return count+1;
     }
     
     int splitArray(vector<int>& nums, int m) {
-          memset(memo, -1, sizeof(memo));
-        
-        // Store the prefix sum of nums array.
-        int n = nums.size();
-        vector<int> prefixSum(n + 1, 0);
-        for (int i = 0; i < n; i++) {
-            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        int low = *max_element(nums.begin(),nums.end());
+        int high = pow(10,9);
+        int ans = 0;
+        while(low<=high)
+        {
+            int mid = low + (high-low)/2;
+            cout<<mid<<"\n";
+            if(check(nums,mid,m)<=m)
+            {
+                ans = mid;
+                high = mid-1;
+            }
+            else 
+                low = mid+1;
         }
-        
-        return solve(prefixSum, 0, m);
+        return ans;
     }
 };
