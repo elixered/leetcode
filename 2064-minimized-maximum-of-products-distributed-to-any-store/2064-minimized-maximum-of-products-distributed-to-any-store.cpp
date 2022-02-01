@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-int check(int v , vector<int>& num , int n){
+int check(int v , vector<int>& num ){
     int c = 0;
     for(int i=0;i<num.size();i++){
         c+= num[i]/v;
@@ -22,7 +22,7 @@ int minimizedMaximum(int n, vector<int>& v) {
     while(l<=h){
         int mid = (l+h)/2;
       
-        int x = check(mid , v, n);
+        int x = check(mid , v);
         if(x<=n){
             ans = mid;
             h = mid-1;
