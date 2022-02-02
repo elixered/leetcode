@@ -6,7 +6,7 @@ public:
         if(k>n) return ans;
         int left =0, right = 0;
         unordered_map<char,int> hm;
-        for(auto c:p)
+        for(auto& c:p)
             hm[c]++;
         int count = hm.size();
         
