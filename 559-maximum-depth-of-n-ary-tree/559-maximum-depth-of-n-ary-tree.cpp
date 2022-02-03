@@ -23,7 +23,7 @@ public:
     int maxDepth(Node* root) {
         if(root==NULL) return 0;
         int d = 0;
-        for(auto it:root->children)
+        for(auto& it:root->children)
             d = max(d,maxDepth(it));
         return d+1;
     }
