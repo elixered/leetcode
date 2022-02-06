@@ -6,20 +6,13 @@ public:
     }
     
     bool book(int start, int end) {
-        map[start]++;
-        map[end]--;
-        int sum = 0;
-        for(auto it:map)
+        auto it = map.upper_bound(start);
+        if(it==map.end() or it->second>=end)
         {
-            sum += it.second;
-            if(sum>1)
-            {
-                map[start]--;
-                map[end]++;
-                return false;
-            }
+            map[end] = start;
+            return true;
         }
-        return true;
+        else return false;
     }
 };
 
