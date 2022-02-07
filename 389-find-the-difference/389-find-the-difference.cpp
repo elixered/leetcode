@@ -6,6 +6,6 @@ public:
             x ^= (it-'a');
         for(auto& it:s)
             x ^= (it-'a');
-        return (char)('a'+x);
+        return ('a'+x);
     }
 };
