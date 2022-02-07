@@ -1,25 +1,24 @@
 class Solution {
 public:
-    bool isMatch(string& s, string& p) {
-        int m = s.size();
-        int n = p.size();
-        bool dp[m+1][n+1];
-        dp[0][0] = true;
-        for(int i=1; i<=m; i++)
-            dp[i][0] = false;
-        for(int j=1; j<=n; j++)
-            dp[0][j] = dp[0][j-1] && (p[j-1]=='*');
-        for(int i=1; i<=m; i++)
-        {
-            for(int j=1; j<=n; j++)
-            {
-                if(s[i-1]==p[j-1] or p[j-1]=='?')
-                    dp[i][j] = dp[i-1][j-1];
-                else if(p[j-1]=='*')
-                    dp[i][j] = dp[i][j-1] or dp[i-1][j];
-                else dp[i][j] = false;
+    bool isMatch(string s, string p) {
+        int m = s.length(), n = p.length();
+        int i = 0, j = 0, asterick = -1, match;
+        while (i < m) {
+            if (j < n && p[j] == '*') {
+                match = i;  
+                asterick = j++;
             }
+            else if (j < n && (s[i] == p[j] || p[j] == '?')) {
+                i++;
+                j++;
+            }
+            else if (asterick >= 0) {
+                i = ++match;
+                j = asterick + 1;
+            }
+            else return false;
         }
-        return dp[m][n];
+        while (j < n && p[j] == '*') j++;
+        return j == n;
     }
 };
