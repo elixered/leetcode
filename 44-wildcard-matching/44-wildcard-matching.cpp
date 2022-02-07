@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool isMatch(string s, string p) {
+    bool isMatch(string& s, string& p) {
         int m = s.size();
         int n = p.size();
         bool dp[m+1][n+1];
