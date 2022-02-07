@@ -1,10 +1,11 @@
 class Solution {
 public:
     
-    bool check( int k, vector<int>& hm)
+    bool check( int k, int *hm)
     {
-        for(auto& it:hm)
+        for(int i=0; i<26; i++)
         {
+            int it = hm[i];
             if(it>0 && it<k)
                 return false;
         }
@@ -16,7 +17,7 @@ public:
         int len = 0;
         for(int i=0; i<n; i++)
         {
-            vector<int> hm(26,0);
+            int hm[26] = {0};
             for(int j=i; j<n; j++)
             {
                 hm[s[j]-'a']++;
