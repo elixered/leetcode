@@ -3,7 +3,7 @@ public:
     bool isMatch(string s, string p) {
         int m = s.size();
         int n = p.size();
-        vector<vector<bool>> dp(m+1,vector<bool>(n+1));
+        bool dp[m+1][n+1];
         dp[0][0] = true;
         for(int i=1; i<=m; i++)
             dp[i][0] = false;
