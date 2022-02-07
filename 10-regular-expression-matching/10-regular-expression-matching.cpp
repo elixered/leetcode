@@ -1,26 +1,54 @@
-class Solution {
+class Solution 
+{
 public:
-    int memo[21][31];
-    bool solve(string& s, string& p, int i, int j)
+    unordered_map<int, unordered_map<char, int>> automaton;
+    int state = 1;
+    bool isMatch(string s, string p)
     {
-        if(i<0 and j<0) return true;
-        else if(j<0) return false;
-        else if(i<0)
-            return p[j]=='*' && (solve(s,p,i,j-2));
-        if(memo[i][j]!=-1) return memo[i][j];
-        bool ans = false;
-        if(s[i]==p[j] or p[j]=='.') ans = solve(s,p,i-1,j-1);
-        else if(p[j]=='*')
+        int plen = p.length();
+        for (int i = 0; i < plen; ++i)
         {
-            if(j>0 && (p[j-1]==s[i] or p[j-1]=='.'))
-            ans = solve(s,p,i-1,j) or solve(s,p,i,j-2);
-            else ans = solve(s,p,i,j-2);
+            char x = p[i];
+            if ('a' <= x && x <= 'z' || x == '.')
+                automaton[state][x] = state + 1, state += 1;
+            else if (x == '*' && i > 0)
+            {
+                automaton[state - 1][p[i - 1]] = state - 1; // match >= 1 p[i - 1]
+                automaton[state - 1]['$'] = state;          // match zero p[i - 1]
+            }
         }
-        return memo[i][j] = ans;
+        return match(s, 0, 1);
     }
     
-    bool isMatch(string s, string p) {
-        memset(memo,-1,sizeof(memo));
-        return solve(s,p,s.size()-1,p.size()-1);
+    /* idx - we are matching s[idx]
+     * cur - current state in automaton
+     */
+    bool match(string &s, int idx, int cur)
+    {
+        int n = s.length();
+        
+        if (cur == 0) return false;
+        if (idx >= n && cur == state) return true;
+        
+        if (idx < n)
+        {
+            /* Each node in automaton, has no more than 3 edges,
+             * '$' means matching no character, hence still use `idx` in next matching.
+             * For example, p = "a.b*c", s = "aac", we should output true,
+             * match(s, idx, s3) means that, we skip matching "b*" in automaton (matched zero 'b').
+             */
+            int s1 = automaton[cur][s[idx]];
+            int s2 = automaton[cur]['.'];
+            int s3 = automaton[cur]['$'];
+            return match(s, idx + 1, s1) || match(s, idx + 1, s2) || match(s, idx, s3);
+        }
+        else if (idx == n) 
+        {
+            /* May be the last edge of automaton is `state[n-1] -- $ --> state[n]`
+             * e.g. s = "aa", p = "a*"
+             */
+            return match(s, idx, automaton[cur]['$']);
+        }
+        return false;
     }
 };
