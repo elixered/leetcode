@@ -1,16 +1,20 @@
 class Solution {
 public:
     int findPairs(vector<int>& nums, int k) {
-        unordered_map<int,int> map;
-        for(auto it:nums)
-            map[it]++;
+        sort(nums.begin(),nums.end());
         int count = 0;
-        for(auto it:map)
+        int n = nums.size();
+        for(int i=0, j=1; i<n && j<n; )
         {
-            if(k==0)
-                count += it.second>1;
-            else
-                count += map.find(it.first+k)!=map.end();
+            if(i>=j || nums[i]+k>nums[j])
+                j++;
+            else if(i>0 && nums[i]==nums[i-1] || nums[i]+k<nums[j])
+                i++;
+            else if(nums[i]+k==nums[j])
+            {
+                count++;
+                i++;
+            }
         }
         return count;
     }
