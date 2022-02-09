@@ -19,7 +19,6 @@ public:
                 }
             }
             else dp[i] = 0;
-            cout<<dp[i]<<" ";
             ans = max(ans,dp[i]);
         }
         return ans;
