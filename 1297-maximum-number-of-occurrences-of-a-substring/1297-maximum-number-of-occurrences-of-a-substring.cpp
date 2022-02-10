@@ -6,8 +6,7 @@ public:
         int unique = 0;
         int n = s.size();
         unordered_map<string,int> hm;
-        for(int k=minSize; k<=maxSize; k++)
-        {
+        int k = minSize;
             int i = 0;
             int j = 0;
             while(j<n)
@@ -34,7 +33,6 @@ public:
                     j++;
                 }
             }
-        }
         int maxi = 0;
         for(auto& it:hm)
             maxi = max(maxi,it.second);
