@@ -13,13 +13,15 @@ public:
             }
             else
             {
-                vector<int> indices(n);
-                vector<int> nums(n);
+                int imin = INT_MAX, imax = INT_MIN;
+                int nmin = INT_MAX, nmax = INT_MIN;
                 while(i<n)
                 {
-                    indices[i]++;
-                    nums[arr[i]]++;
-                    if(indices==nums)
+                    imin = min(i,imin);
+                    imax = max(i,imax);
+                    nmin = min(nmin,arr[i]);
+                    nmax = max(nmax,arr[i]);
+                    if(imin==nmin && imax==nmax)
                     {
                         count++;
                         i++;
