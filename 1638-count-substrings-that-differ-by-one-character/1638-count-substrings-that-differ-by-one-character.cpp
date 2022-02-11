@@ -28,11 +28,8 @@ public:
                         sright++;
                         tright++;
                     }
-                    if(left==0)
-                        ans += right+1;
-                    else if(right==0)
-                        ans += left+1;
-                    else ans += (left+1)*(right+1);
+                    
+                     ans += (left+1)*(right+1);
                 }
             }
         }
