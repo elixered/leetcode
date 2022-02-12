@@ -1,42 +1,39 @@
 class Solution {
 public:
-	int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-		unordered_set<string> s1;
-		unordered_set<string> s2;
-		unordered_set<string> dict(wordList.begin(),wordList.end());
-		if(!dict.count(endWord)) return 0;
-		int len=beginWord.size();
-		int ans=0;
-		s1.insert(beginWord);
-		s2.insert(endWord);
-		while(!s1.empty() && !s2.empty()){
-			ans++;
-			if(s1.size()>s2.size()){
-				swap(s1,s2);
-			}
-			unordered_set<string> cur;
-			for(string w:s1){
-				for(int i=0;i<len;i++){
-					char temp=w[i];
-					for(char x='a';x<='z';x++){
-						w[i]=x;
-						if(s2.count(w)){
-							return ans+1;
-						}
-						if(!dict.count(w))continue;
-						dict.erase(w);
-						cur.insert(w);
-					}
-					w[i]=temp;
-
-				}
-			}
-
-			s1=cur;
-
-		}
-
-		return 0;
-
-	}
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string> words(wordList.begin(),wordList.end());
+        queue<string> q;
+        if(words.find(endWord)==words.end())
+            return 0;
+        int count = 0;
+        q.push(beginWord);
+        unordered_set<string> visited;
+        visited.insert(beginWord);
+        while(!q.empty())
+        {
+            count++;
+            int n = q.size();
+            for(int k=0; k<n; k++)
+            {
+                auto s = q.front();
+                q.pop();
+                if(s==endWord) return count;
+                for(int i=0; i<s.size(); i++)
+                {
+                    char temp = s[i];
+                    for(char ch='a'; ch<='z'; ch++)
+                    {
+                        s[i] = ch;
+                        if(visited.find(s)!=visited.end() or words.find(s)==words.end()) continue;
+                        {
+                            q.push(s);
+                            visited.insert(s);
+                        }
+                    }
+                    s[i] = temp;
+                }
+            }
+        }
+        return 0;
+    }
 };
