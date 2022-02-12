@@ -10,36 +10,26 @@ public:
     }
     
     int pop() {
-        queue<int> q2;
-        while(q1.size()>1)
+        int n = q1.size();
+        for(int i=1; i<n ;i++)
         {
-            q2.push(q1.front());
+            q1.push(q1.front());
             q1.pop();
         }
         int x = q1.front();
         q1.pop();
-        while(!q2.empty())
-        {
-            q1.push(q2.front());
-            q2.pop();
-        }
         return x;
     }
     
     int top() {
-        queue<int> q2;
-        while(q1.size()>1)
+        int n = q1.size();
+        for(int i=1; i<n ;i++)
         {
-            q2.push(q1.front());
+            q1.push(q1.front());
             q1.pop();
         }
         int x = q1.front();
         q1.pop();
-        while(!q2.empty())
-        {
-            q1.push(q2.front());
-            q2.pop();
-        }
         q1.push(x);
         return x;
     }
