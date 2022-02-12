@@ -13,9 +13,10 @@ public:
         {
             int n = q.size();
             vector<vector<string>> temp;
+            vector<string> curr;
             for(int idx=0; idx<n; idx++)
             {
-                vector<string> curr = levels[idx];
+                curr = levels[idx];
                 unordered_set<string> prev(levels[idx].begin(),levels[idx].end());
                 auto s = q.front();
                 q.pop();
