@@ -7,8 +7,6 @@ public:
             return 0;
         int count = 0;
         q.push(beginWord);
-        unordered_set<string> visited;
-        visited.insert(beginWord);
         while(!q.empty())
         {
             count++;
@@ -24,10 +22,10 @@ public:
                     for(char ch='a'; ch<='z'; ch++)
                     {
                         s[i] = ch;
-                        if(visited.find(s)!=visited.end() or words.find(s)==words.end()) continue;
+                        if(words.find(s)==words.end()) continue;
                         {
                             q.push(s);
-                            visited.insert(s);
+                            words.erase(s);
                         }
                     }
                     s[i] = temp;
