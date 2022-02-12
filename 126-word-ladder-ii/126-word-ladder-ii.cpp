@@ -1,37 +1,60 @@
-class Solution { // 4 ms, faster than 99.32%
+class Solution {
 public:
-    vector<vector<string>> findLadders(const string& beginWord, const string& endWord, vector<string>& wordList) {
-        unordered_set<string> wordSet(wordList.begin(), wordList.end()); // to check if a word is existed in the wordSet, in O(1)
-        wordSet.erase(beginWord);
-
-        unordered_map<string, vector<vector<string>>> level;
-        level[beginWord] = {{beginWord}}; // level[word] is all possible sequence paths which start from beginWord and end at `word`.
-        while (!level.empty()) {
-            unordered_map<string, vector<vector<string>>> newLevel;
-            for (const auto& [word, paths] : level) {
-                if (word == endWord)
-                    return level[word]; // return all shortest sequence paths
-                for (const string& nei : neighbors(word, wordSet)) {
-                    for (auto path : paths) {
-                        path.push_back(nei); // form new paths with `nei` word at the end
-                        newLevel[nei].push_back(path);
+    vector<vector<string>> findLadders(string start, string end, vector<string>& wordList) {
+        vector<vector<string>> ans;
+        vector<vector<string>> levels;
+        unordered_set<string> words(wordList.begin(),wordList.end());
+        queue<string> q;
+        bool flag = false;
+        if(words.find(end)==words.end()) return ans;
+        q.push(start);
+        levels.push_back({start});
+        while(!q.empty())
+        {
+            int n = q.size();
+            vector<vector<string>> temp;
+            for(int idx=0; idx<n; idx++)
+            {
+                vector<string> curr = levels[idx];
+                unordered_set<string> prev(levels[idx].begin(),levels[idx].end());
+                auto s = q.front();
+                q.pop();
+                for(int i=0; i<s.size(); i++)
+                {
+                    char d = s[i];
+                    for(char ch='a'; ch<='z'; ch++)
+                    {
+                        if(ch==d) continue;
+                        s[i] = ch;
+                        if(s==end)
+                        {
+                            flag = true;
+                            curr.push_back(s);
+                            temp.push_back(curr);
+                            curr.pop_back();
+                        }
+                        else
+                        if(words.find(s)!=words.end())
+                        {
+                            curr.push_back(s);
+                            temp.push_back(curr);
+                            curr.pop_back();
+                            q.push(s);
+                        }
+                        s[i] = d;
                     }
                 }
+                words.erase(s);
             }
-            for (const auto& [word, _] : newLevel) wordSet.erase(word); // remove visited words to prevent loops
-            level.swap(newLevel); // move to new level
+            levels = temp;
+            if(flag) break;
         }
-        return {};
-    }
-    vector<string> neighbors(const string& word, const unordered_set<string>& wordSet) {
-        vector<string> ans;
-        for (int i = 0; i < word.size(); ++i) { // change every possible single letters and check if it's in wordSet
-            for (char c = 'a'; c <= 'z'; ++c) {
-                string newWord = word.substr(0, i) + c + word.substr(i+1);
-                if (!wordSet.count(newWord)) continue;
-                ans.push_back(newWord);
-            }
+        for(auto it:levels)
+        {
+            if(it.back()==end)
+                ans.push_back(it);
         }
+        
         return ans;
     }
 };
