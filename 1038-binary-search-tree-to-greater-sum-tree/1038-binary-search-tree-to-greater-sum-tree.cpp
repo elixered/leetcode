@@ -11,26 +11,15 @@
  */
 class Solution {
 public:
-    TreeNode* bstToGst(TreeNode* root) {
-        if(root==NULL) return root;
-        stack<TreeNode*> stack;
-        TreeNode* curr = root;
         int sum = 0;
-        while(!stack.empty() or curr)
-        {
-            while(curr)
-            {
-                stack.push(curr);
-                curr = curr->right;
-            }
-            curr = stack.top();
-            stack.pop();
-            int x = curr->val;
-            curr->val += sum;
-            sum += x;
-            curr = curr->left;
-        }
-        
+    TreeNode* bstToGst(TreeNode* root) {
+        if(root==NULL)
+            return root;
+        root->right = bstToGst(root->right);
+        int x = root->val;
+        root->val += sum;
+        sum += x;
+        root->left = bstToGst(root->left);
         return root;
     }
 };
