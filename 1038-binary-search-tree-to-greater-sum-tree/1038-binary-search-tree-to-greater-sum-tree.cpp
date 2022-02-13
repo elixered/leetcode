@@ -15,7 +15,7 @@ public:
         if(root==NULL) return root;
         stack<TreeNode*> stack;
         TreeNode* curr = root;
-        vector<TreeNode*> ans;
+        int sum = 0;
         while(!stack.empty() or curr)
         {
             while(curr)
@@ -25,13 +25,12 @@ public:
             }
             curr = stack.top();
             stack.pop();
-            ans.push_back(curr);
+            int x = curr->val;
+            curr->val += sum;
+            sum += x;
             curr = curr->left;
         }
-        for(int i=1; i<ans.size(); i++)
-        {
-            ans[i]->val += ans[i-1]->val;
-        }
+        
         return root;
     }
 };
