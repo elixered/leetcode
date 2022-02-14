@@ -24,8 +24,9 @@ public:
             }
             root = st.top();
             st.pop();
-            res->right = new TreeNode(root->val);
+            res->right = root;
             res = res->right;
+            root->left = NULL;
             root = root->right;
         }
         return dummy->right;
