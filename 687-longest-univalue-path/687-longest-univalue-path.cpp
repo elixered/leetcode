@@ -12,25 +12,26 @@
 class Solution {
 public:
     int ans = 0;
-    int solve(TreeNode* root, int x)
+    int solve(TreeNode* root)
     {
-        if(root==NULL or root->val!=x)
+        if(root==NULL)
             return 0;
-        int l = solve(root->left,x);
-        int r = solve(root->right,x);
+        int l = solve(root->left);
+        int r = solve(root->right);
+        int arrowleft = 0, arrowright = 0;
+        if(root->left && root->left->val==root->val)
+            l++;
+        else l =0;
+        if(root->right && root->right->val==root->val)
+            r++;
+        else r = 0;
         ans = max(ans,l+r);
-        return max(l,r)+1;
+        return max(l,r);
     }
-    void dfs(TreeNode* root)
-    {
-        if(!root) return;
-        solve(root,root->val);
-        dfs(root->left);
-        dfs(root->right);
-    }
+
     int longestUnivaluePath(TreeNode* root) {
         if(root==NULL) return 0;
-        dfs(root);
+        solve(root);
         return ans;
     }
 };
