@@ -11,24 +11,21 @@
  */
 class Solution {
 public:
-    TreeNode* increasingBST(TreeNode* root) {
-        TreeNode* res = new TreeNode(102), *dummy = res;
-        if(root==NULL) return root;
-        stack<TreeNode*> st;
-        while(!st.empty() or root)
+     TreeNode* res,*dummy;
+    void solve(TreeNode* root)
+    {
+        if(root)
         {
-            while(root)
-            {
-                st.push(root);
-                root = root->left;
-            }
-            root = st.top();
-            st.pop();
-            res->right = root;
+            solve(root->left);
+            res->right = new TreeNode(root->val);
             res = res->right;
-            root->left = NULL;
-            root = root->right;
+            solve(root->right);
         }
+    }
+    TreeNode* increasingBST(TreeNode* root) {
+        res = new TreeNode(102), dummy = res;
+        if(root==NULL) return root;
+        solve(root);
         return dummy->right;
     }
 };
