@@ -17,8 +17,9 @@ public:
         if(root)
         {
             solve(root->left);
-            res->right = new TreeNode(root->val);
+            res->right = root;
             res = res->right;
+            root->left = NULL;
             solve(root->right);
         }
     }
