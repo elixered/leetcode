@@ -1,36 +1,40 @@
 class Solution {
 public:
     vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
-         vector<vector<int>> res;
-        queue<TreeNode *> q;
-        if(root==NULL)
-            return res;
-        bool leftToRight = true;
-        q.push(root);
-        {
-            while(!q.empty())
-            {
-                int n = q.size();
-                vector<int> temp(n);
-                for(int i=0;i<n;i++)
-                {
-                    TreeNode *curr = q.front();
-                    q.pop();
-                    int idx;
-                    if(leftToRight)
-                        idx = i;
-                    else
-                        idx = n-1-i;
-                    temp[idx]=curr->val;
-                    if(curr->left)q.push(curr->left);
-                    if(curr->right)q.push(curr->right);
+        vector<vector<int>> ans;
+        if(!root)
+            return ans;
+        deque<TreeNode*> dq;
+        dq.push_back(root);
+        bool isLTR = true;
+        while(!dq.empty()) {
+            int n = dq.size();
+            vector<int> currLevel;
+            if(isLTR) {
+                isLTR = false;
+                for(int i=0;i<n;++i) {
+                    auto curr = dq.front();
+                    dq.pop_front();
+                    currLevel.push_back(curr->val);
+                    if(curr->left)
+                        dq.push_back(curr->left);
+                    if(curr->right)
+                        dq.push_back(curr->right);
                 }
-                leftToRight = !leftToRight;
-                res.push_back(temp);
+            } else {
+                isLTR = true;
+                for(int i=0;i<n;++i) {
+                    auto curr = dq.back();
+                    dq.pop_back();
+                    currLevel.push_back(curr->val);
+                    if(curr->right)
+                        dq.push_front(curr->right);
+                    if(curr->left)
+                        dq.push_front(curr->left);
+                }
             }
+            ans.push_back(currLevel);
         }
-       
-        return res;
-    
+        return ans;
     }
 };
