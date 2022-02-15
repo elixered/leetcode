@@ -4,11 +4,8 @@ public:
         if(root==NULL) return NULL;
         root->left = removeLeafNodes(root->left,target);
         root->right = removeLeafNodes(root->right,target);
-        if(root->val == target && !root->left && !root->right)
-        {
-            return NULL;
-        }
-        else
-        return root;
+        if(root->left != root->right or root->val!=target)
+            return root;
+        else return NULL;
     }
 };
