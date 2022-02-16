@@ -44,7 +44,7 @@ public:
         else
         {
             i.isBST= false;
-            i.maxsum = max(left.maxsum,right.maxsum);
+            i.maxsum = 0;
         }
         ans = max(ans,i.maxsum);
         return i;
