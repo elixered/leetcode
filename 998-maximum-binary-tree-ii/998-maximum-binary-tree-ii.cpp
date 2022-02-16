@@ -11,34 +11,16 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode* root, vector<int>& nums)
-    {
-        if(root)
-        {
-            inorder(root->left,nums);
-            nums.push_back(root->val);
-            inorder(root->right,nums);
-        }
-    }
     TreeNode* insertIntoMaxTree(TreeNode* root, int val) {
-        vector<int> nums;
-        inorder(root,nums);
-        nums.push_back(val);
-        stack<TreeNode*> st;
-        for(auto& it:nums)
+        if(root==NULL)
+            return new TreeNode(val);
+        if(root->val < val)
         {
-            TreeNode* curr =new TreeNode(it);
-            while(!st.empty() && st.top()->val < curr->val)
-            {
-                curr->left = st.top();
-                st.pop();
-            }
-            if(!st.empty())
-                st.top()->right = curr;
-            st.push(curr);
+            TreeNode* curr = new TreeNode(val);
+            curr->left = root;
+            return curr;
         }
-        while(st.size()>1)
-            st.pop();
-        return st.top();
+        else root->right = insertIntoMaxTree(root->right,val);
+        return root;
     }
 };
