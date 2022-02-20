@@ -28,7 +28,7 @@ public:
                 if(res_cnt.count(n2)==0){
                     continue;
                 }
-                ret += c1*res_cnt.at(n2);
+                ret += c1*res_cnt[n2];
             }
         }
         return ret;
