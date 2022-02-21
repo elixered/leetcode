@@ -3,7 +3,7 @@ public:
     int majorityElement(vector<int>& nums) {
         int ans = 0;
         int count = 0;
-        for(auto it:nums)
+        for(auto& it:nums)
         {
             if(count==0)
             {
