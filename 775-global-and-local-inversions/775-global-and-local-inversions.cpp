@@ -1,5 +1,6 @@
 class Solution {
-int BIT[100002], m;
+vector<int> BIT;
+int m;
 void update(int x, int delta)
 {
       for(; x <= m; x += x&-x)
@@ -18,6 +19,7 @@ public:
         int global = 0;
         int n = nums.size();
         m = n+2;
+        BIT = vector<int>(m+2,0);
         for(int i=0; i<n; i++)
         {
             if(i<n-1 && nums[i]>nums[i+1])
