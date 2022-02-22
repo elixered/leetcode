@@ -31,17 +31,14 @@ int getidx(int idx){
 }
 
 vector<int> countSmaller(vector<int>& nums) {
-    vector<int> ans;
+    int n = nums.size();
+    vector<int> ans(n,0);
     BIT bit;
-    for(int i:nums){
-        bit.update(getidx(i),1);
+    for(int i=n-1; i>=0; i--)
+    {
+        ans[i] = bit.query(getidx(nums[i])-1);
+        bit.update(getidx(nums[i]),1);
     }
-    
-    for(int i:nums){
-        ans.push_back(bit.query(getidx(i-1)));
-        bit.update(getidx(i),-1);
-    }
-    
     return ans;
     
 }
