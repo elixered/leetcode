@@ -1,50 +1,54 @@
 class Solution {
 public:
-void invCount(vector<int> &count, vector<pair<int, int>> &v, int low, int high)
-{
-    int mid=low+(high-low)/2, i=low, k=0, j=mid+1;
-    vector<pair<int, int>> temp(high-low+1);
-    
-    while(i<=mid && j<=high)
-    {
-        if(v[i].first>v[j].first)
-        {
-            count[v[i].second] += high-j+1;
-            temp[k++]=v[i++];
+    void merge(vector<int> &count, vector<pair<int, int> > &v, int left, int mid, int right) {
+        vector<pair<int, int> > tmp(right-left+1);
+        int i = left;
+        int j = mid+1;
+        int k = 0;
+        int cnt = 0;
+        while (i <= mid && j <= right) {
+            if (v[i].first <= v[j].first) { 
+                count[v[i].second] += cnt;
+                tmp[k++] = v[i++];
+            }
+            else {
+                // only line responsible to update count, related to problem constraint, 
+                // remaining part is just regular mergeSort 
+                cnt++;
+                tmp[k++] = v[j++];
+            }
         }
-        else    temp[k++]=v[j++];
-        
+        while (i <= mid) {
+            count[v[i].second] += cnt;
+            tmp[k++] = v[i++];
+        }
+        while (j <= right) {
+            tmp[k++] = v[j++];
+        }
+        for (int i = left; i <= right; i++)
+            v[i] = tmp[i-left];
+    }        
+
+    void mergeSort(vector<int> &count, vector<pair<int, int> > &v, int left, int right) {
+        if (left >= right) 
+            return;
+
+        int mid = left + (right-left)/2;
+        mergeSort(count, v, left, mid);
+        mergeSort(count, v, mid+1, right);
+        merge(count, v, left, mid, right);
     }
-    while(i<=mid)
-        temp[k++]=v[i++];
 
-    while(j<=high)
-        temp[k++]=v[j++];
-    
-    for(int x=low; x<=high; x++)
-    {
-            v[x]=temp[x-low];
+    vector<int> countSmaller(vector<int>& nums) {
+        int N = nums.size();
+
+        vector<pair<int, int> > v(N);
+        for (int i = 0; i < N; i++)   
+            v[i] = make_pair(nums[i], i);
+
+        vector<int> count(N, 0);
+        mergeSort(count, v, 0, N-1);
+
+        return count;
     }
-    
-}
-
-void mergeSort(vector<int> &count, vector<pair<int, int>> &v, int low, int high)
-{
-    if(low>=high)   return;
-    int mid=low+(high-low)/2;
-    mergeSort(count, v, low, mid);
-    mergeSort(count, v, mid+1, high);
-    invCount(count, v, low, high);
-}
-
-vector<int> countSmaller(vector<int>& nums) {
-    int n=nums.size();
-    vector<pair<int, int>> v;
-    vector<int> count(n,0);
-    for(int i=0; i<n; i++)
-        v.push_back(make_pair(nums[i], i));
-
-    mergeSort(count, v, 0, n-1);
-    return count;    
-}
 };
