@@ -1,43 +1,26 @@
 class Solution {
-private:
-    int m,n;
-    vector<vector<int>> vis;
-    
-    bool hasCycle(vector<vector<char>>& grid, int r, int c,char ch, vector<int> prev)
+    public:
+ vector<int> dir = { 0, 1, 0, -1, 0 }; 
+    bool isCyclic(vector<vector<char>>& grid, vector<vector<bool>>& visited, int i, int j, int x, int y)
     {
-        if(r<0 or c<0 or r>=m or c>=n or grid[r][c]!=ch)
-            return false;
-        if(vis[r][c])
-            return true;
-        vis[r][c] = 1;
-        if(prev[0]!=r+1 or prev[1]!=c)
-            if(hasCycle(grid,r+1,c,ch,{r,c}))
-                return true;
-        if(prev[0]!=r-1 or prev[1]!=c)
-            if(hasCycle(grid,r-1,c,ch,{r,c}))
-                return true;
-        if(prev[0]!=r or prev[1]!=c+1)
-            if(hasCycle(grid,r,c+1,ch,{r,c}))
-                return true;
-        if(prev[0]!=r or prev[1]!=c-1)
-            if(hasCycle(grid,r,c-1,ch,{r,c}))
-                return true;
+        visited[i][j] = true;
+        for(int d = 0; d < 4; ++d)
+        {
+            int a = i+dir[d];
+            int b = j+dir[d+1];
+            if(a >= 0 && a < grid.size() && b >= 0 && b < grid[0].size() && grid[a][b] == grid[i][j] && !(x == a && y == b))
+                if(visited[a][b] || isCyclic(grid, visited, a,b,i,j))
+                    return true;
+        }
         return false;
     }
-    
-public:
     bool containsCycle(vector<vector<char>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
-        vis = vector<vector<int>>(m,vector<int>(n,0));
-        for(int i=0; i<m; i++)
-        {
-            for(int j=0; j<n; j++)
-            {
-                if(!vis[i][j] && hasCycle(grid,i,j,grid[i][j],{-1,-1}))
+        int n = grid.size(), m = grid[0].size();
+        vector<vector<bool>> visited(n, vector<bool>(m, false));
+        for(int i = 0; i < n; ++i)
+            for(int j = 0; j < m; ++j)
+                if(!visited[i][j] && isCyclic(grid, visited, i, j, -1, -1))
                     return true;
-            }
-        }
         return false;
     }
 };
