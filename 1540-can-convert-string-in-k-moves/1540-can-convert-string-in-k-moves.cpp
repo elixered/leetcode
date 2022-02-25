@@ -3,7 +3,7 @@ public:
     bool canConvertString(string s, string t, int k) {
         if(s.size()!=t.size()) return false;
         int n = s.size();
-        unordered_map<int,int> map;
+        vector<int> map(27,0);
         int mini = k/26;
         int rest = k%26;
         for(int i=1; i<=26; i++)
