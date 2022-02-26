@@ -2,7 +2,7 @@ class Solution {
 private:
     int m;
     int n;
-    int memo[10][1000];
+    int memo[10][300];
 public:
     int match(vector<vector<int>>& stu, vector<vector<int>>& ment, int i, int j)
     {
