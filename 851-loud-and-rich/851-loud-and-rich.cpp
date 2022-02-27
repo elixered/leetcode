@@ -1,32 +1,38 @@
 class Solution {
 public:
-    vector<vector<int>> g;
     
-    void dfs(vector<int>& v, vector<int>& quiet, int curr, int& mini)
-    {
-        if(v[curr]) return;
-        v[curr] = 1;
-        if(quiet[curr]<quiet[mini])
-            mini = curr;
-        for(auto nb:g[curr])
-            dfs(v,quiet,nb,mini);
+    int dfs(vector<vector<int>>& adj, vector<int>& quiet, vector<int>& ans, int node) {
+        if(ans[node] != -1) return ans[node];
+        
+        ans[node] = node;
+        for(auto& nb : adj[node]) {
+            int curr = dfs(adj, quiet, ans, nb);
+            
+            if(quiet[curr] < quiet[ans[node]]) {
+                ans[node] = curr;
+            }
+        }
+        
+        return ans[node];
     }
     
     vector<int> loudAndRich(vector<vector<int>>& richer, vector<int>& quiet) {
+        
         int n = quiet.size();
-        g = vector<vector<int>>(n);
-        for(auto& it:richer)
-        {
-            g[it[1]].push_back(it[0]);
+        
+        vector<vector<int>> adj(n);
+
+        for(auto& rich : richer) {
+            adj[rich[1]].push_back(rich[0]);
         }
-        vector<int> ans(n);
-        for(int i=0; i<n; i++)
-        {
-            int mini = i;
-            vector<int> v(n,0);
-            dfs(v,quiet,i,mini);
-            ans[i] = mini;
+        
+        vector<int> answer(n, -1);
+        
+        for(int i=0; i<n; i++) {
+            if(answer[i] == -1)
+                dfs(adj, quiet, answer, i);
         }
-        return ans;
+        
+        return answer;
     }
 };
