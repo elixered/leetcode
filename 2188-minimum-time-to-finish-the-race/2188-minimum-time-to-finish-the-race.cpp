@@ -3,7 +3,7 @@ public:
     #define ll long long
     ll M = pow(10,6);
     int minimumFinishTime(vector<vector<int>>& tires, int change, int laps) {
-        vector<ll> best(2000,INT_MAX);
+        vector<ll> best(max(laps+1,21),INT_MAX);
         best[0] = 0;
         for(auto& t:tires)
         {
