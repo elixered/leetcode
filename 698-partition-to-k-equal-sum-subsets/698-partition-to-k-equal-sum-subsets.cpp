@@ -5,7 +5,7 @@ public:
     
     bool solve(vector<int>& nums, int sum, int mask, int count)
     {
-        if(count == k-1) return true;
+        if(count == k) return true;
         if(dp[mask]!=-1) return dp[mask];
         bool ans = false;
         for(int i=0; i<n; i++)
