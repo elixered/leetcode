@@ -1,14 +1,12 @@
 class Solution {
 public:
-    int dp[1002][1002];
+    int dp[1002];
     #define maxi pow(10,7)
-    int dfs(vector<vector<int>>& books, int idx, int curr, int width)
+    int dfs(vector<vector<int>>& books, int idx, int width)
     {
         int n = books.size();
-        if(curr>width)
-            return maxi;
         if(idx==n) return 0;
-        if(dp[idx][curr]!=-1) return dp[idx][curr];
+        if(dp[idx]!=-1) return dp[idx];
         int ans = maxi;
         int mx = 0;
         int sum = 0;
@@ -16,15 +14,14 @@ public:
         {
             mx = max(mx,books[i][1]);
             sum += books[i][0];
-            if(sum+curr>width) break;
-            ans = min(ans,mx+dfs(books,i+1,sum+curr,width));
-            ans = min(ans,mx+dfs(books,i+1,0,width));
+            if(sum>width) break;
+            ans = min(ans,mx+dfs(books,i+1,width));
         }
-        return dp[idx][curr] = ans;
+        return dp[idx] = ans;
     }
     
     int minHeightShelves(vector<vector<int>>& books, int width) {
         memset(dp,-1,sizeof(dp));
-        return dfs(books,0,0,width);
+        return dfs(books,0,width);
     }
 };
