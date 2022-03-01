@@ -16,9 +16,9 @@ public:
         {
             mx = max(mx,books[i][1]);
             sum += books[i][0];
+            if(sum+curr>width) break;
             ans = min(ans,mx+dfs(books,i+1,sum+curr,width));
-            if(sum+curr<=width)
-                ans = min(ans,mx+dfs(books,i+1,0,width));
+            ans = min(ans,mx+dfs(books,i+1,0,width));
         }
         return dp[idx][curr] = ans;
     }
