@@ -3,12 +3,7 @@ public:
     
     int match(int a, int b)
     {
-        for(int i=0; i<32; i++)
-        {
-            if((a&(1<<i))!=0 && (b&(1<<i))!=0)
-                return true;
-        }
-        return false;
+        return (a&b)!=0;
     }
     
     int maxProduct(vector<string>& words) {
