@@ -1,23 +1,24 @@
 class Solution {
 public:
-    vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
-        unordered_map<string,int> map1,map2;
-        for(int i=0; i<list1.size(); i++)
-            map1[list1[i]] = i;
-        for(int i=0; i<list2.size(); i++)
-            map2[list2[i]] = i;
-        int ans = 200000;
-        for(auto it:map1)
+vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
+        vector<string>res;
+        unordered_map<string,int>m;
+        int min = INT_MAX;
+        for(int i = 0; i < list1.size(); i++) 
+            m[list1[i]] = i;
+        for(int i = 0; i < list2.size(); i++)
         {
-            if(map2.find(it.first)!=map2.end())
-                ans = min(ans,it.second+map2[it.first]);
-        }
-        vector<string> res;
-        for(auto it:map1)
-        {
-            if(map2.find(it.first)!=map2.end())
-                if(it.second+map2[it.first]==ans)
-                    res.push_back(it.first);
+            if(m.count(list2[i]) != 0)
+            {
+                if(m[list2[i]] + i < min) 
+                {
+                    min = m[list2[i]] + i;
+                    res.clear();
+                    res.push_back(list2[i]);
+                }
+                else if(m[list2[i]] + i == min)
+                    res.push_back(list2[i]);
+            }
         }
         return res;
     }
