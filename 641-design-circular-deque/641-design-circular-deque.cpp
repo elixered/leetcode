@@ -1,59 +1,112 @@
 class MyCircularDeque {
 public:
-    vector<int> deq;
-    int k;
+    int k,sz;
+    struct Node{
+        int val;
+        Node* next;
+        Node* prev;
+        Node(int v)
+        {
+            val = v;
+            next = NULL;
+            prev = NULL;
+        }
+    };
+    Node *front,*back;
     MyCircularDeque(int k) {
         this->k = k;
-        deq = vector<int>();
+        sz = 0;
+        front = NULL, back = NULL;
     }
     
     bool insertFront(int value) {
-        if(deq.size()==k) return false;
-        vector<int> temp ;
-        temp.push_back(value);
-        for(auto it:deq)
-            temp.push_back(it);
-        deq = temp;
+        if(k==sz) return false;
+        Node* newNode = new Node(value);
+        sz++;
+        if(front==NULL && back==NULL)
+        {
+            front = newNode;
+            back = newNode;
+        }
+        else
+        {
+            newNode->next = front;
+            front->prev = newNode;
+            front = newNode;
+        }
         return true;
     }
     
     bool insertLast(int value) {
-        if(deq.size()==k) return false;
-        deq.push_back(value);
+        if(k==sz) return false;
+        Node* newNode = new Node(value);
+        sz++;
+        if(front==NULL && back==NULL)
+        {
+            front = newNode;
+            back = newNode;
+        }
+        else
+        {
+            back->next = newNode;
+            newNode->prev = back;
+            back = newNode;
+        }
         return true;
     }
     
     bool deleteFront() {
-        if(deq.size()==0) return false;
-        vector<int> temp;
-        for(int i=1; i<deq.size(); i++)
-            temp.push_back(deq[i]);
-        deq = temp;
+        if(sz==0) return false;
+        sz--;
+        Node* temp = front;
+        if(front==back)
+        {
+            front = NULL;
+            back = NULL;
+        }
+        else 
+        {
+            front = front->next;
+            front->prev = NULL;
+        }
+        delete temp;
         return true;
     }
     
     bool deleteLast() {
-        if(deq.size()==0) return false;
-        deq.pop_back();
+        if(sz==0) return false;
+        sz--;
+        Node* temp = back;
+        if(front==back)
+        {
+            front = NULL;
+            back = NULL;
+        }
+        else 
+        {
+            back = back->prev;
+            back->next = NULL;
+        }
+        delete temp;
         return true;
     }
     
     int getFront() {
-        if(deq.size()==0) return -1;
-        return deq[0];
+        if(sz==0) return -1;
+        return front->val;
     }
     
     int getRear() {
-        if(deq.size()==0) return -1;
-        return deq.back();
+        if(back==NULL) return -1;
+        return back->val;
     }
     
     bool isEmpty() {
-        return deq.size()==0;
+        return sz==0;
     }
     
     bool isFull() {
-        return deq.size()==k;
+        return sz==k;
     }
 };
 
