@@ -1,112 +1,64 @@
 class MyCircularDeque {
 public:
-    int k,sz;
-    struct Node{
-        int val;
-        Node* next;
-        Node* prev;
-        Node(int v)
-        {
-            val = v;
-            next = NULL;
-            prev = NULL;
-        }
-    };
-    Node *front,*back;
+    int front, rear, k, size;
+    vector<int> nums;
+
     MyCircularDeque(int k) {
+        front = -1;
         this->k = k;
-        sz = 0;
-        front = NULL, back = NULL;
+        size = 0;
+        rear = -1;
+        nums = vector<int>(k,0);
     }
     
     bool insertFront(int value) {
-        if(k==sz) return false;
-        Node* newNode = new Node(value);
-        sz++;
-        if(front==NULL && back==NULL)
-        {
-            front = newNode;
-            back = newNode;
-        }
-        else
-        {
-            newNode->next = front;
-            front->prev = newNode;
-            front = newNode;
-        }
+        if(isFull()) return false;
+        size++;
+        front = (front-1+k)%k;
+        if(size==1)
+            rear = front;
+        nums[front] = value;
         return true;
     }
     
     bool insertLast(int value) {
-        if(k==sz) return false;
-        Node* newNode = new Node(value);
-        sz++;
-        if(front==NULL && back==NULL)
-        {
-            front = newNode;
-            back = newNode;
-        }
-        else
-        {
-            back->next = newNode;
-            newNode->prev = back;
-            back = newNode;
-        }
+        if(isFull()) return false;
+        size++;
+        rear = (rear+1)%k;
+        if(size==1)
+            front = rear;
+        nums[rear] = value;
         return true;
     }
     
     bool deleteFront() {
-        if(sz==0) return false;
-        sz--;
-        Node* temp = front;
-        if(front==back)
-        {
-            front = NULL;
-            back = NULL;
-        }
-        else 
-        {
-            front = front->next;
-            front->prev = NULL;
-        }
-        delete temp;
+        if(isEmpty()) return false;
+        front = (front+1)%k;
+        size--;
         return true;
     }
     
     bool deleteLast() {
-        if(sz==0) return false;
-        sz--;
-        Node* temp = back;
-        if(front==back)
-        {
-            front = NULL;
-            back = NULL;
-        }
-        else 
-        {
-            back = back->prev;
-            back->next = NULL;
-        }
-        delete temp;
+        if(isEmpty()) return false;
+        rear = (rear-1+k)%k;
+        size--;
         return true;
     }
     
     int getFront() {
-        if(sz==0) return -1;
-        return front->val;
+         return isEmpty() ? -1 : nums[front];
     }
     
     int getRear() {
-        if(back==NULL) return -1;
-        return back->val;
+        return isEmpty() ? -1 : nums[rear];
     }
     
     bool isEmpty() {
-        return sz==0;
+        return size == 0;
     }
     
     bool isFull() {
-        return sz==k;
+        return size == k;
     }
 };
 
