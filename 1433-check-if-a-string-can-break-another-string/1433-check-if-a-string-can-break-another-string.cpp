@@ -3,17 +3,21 @@ public:
     
     bool check(string s, string t)
     {
-        for(int i=0; i<s.size(); i++)
+        vector<int> hm(26,0);
+        for(auto c:s)
+            hm[c-'a']++;
+        for(auto c:t)
         {
-            if(s[i]<t[i]) return false;
+            int idx = c-'a';
+            while(idx>=0 && hm[idx]<=0)
+                idx--;
+            if(idx<0) return false;
+            else hm[idx]--;
         }
         return true;
     }
     
     bool checkIfCanBreak(string s1, string s2) {
-        sort(s1.begin(),s1.end());
-        sort(s2.begin(),s2.end());
-        if(check(s1,s2)) return true;
-        return check(s2,s1);
+        return check(s1,s2) or check(s2,s1);
     }
 };
