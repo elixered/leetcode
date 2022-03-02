@@ -1,50 +1,52 @@
 class Solution {
 public:
     string predictPartyVictory(string senate) {
-        int n = senate.size();
-        int rc = 0, dc = 0;
+        int rad = 0, dire = 0;
+        int disabledRad = 0, disabledDire = 0;
         for(auto c:senate)
         {
             if(c=='D')
-                dc++;
-            else rc++;
+                dire++;
+            else rad++;
         }
-        if(rc==0) return "Dire";
-        if(dc==0) return "Radiant";
-        vector<int> vis(n,0);
-        while(true)
+        vector<int> vis(senate.size(),0);
+while(true){
+        for(int i=0; i<senate.size(); i++)
         {
-        for(int i=0; i<n; i++)
-        {
+            char it = senate[i];
             if(!vis[i])
-        {
-            if(senate[i]=='D')
             {
-                int j = (i+1)%n;
-                while(j!=i && (senate[j]!='R' or vis[j]))
-                    j = (j+1)%n;
-                if(j!=i)
+            if(it=='D')
+            {
+                if(disabledDire>0)
                 {
-                    vis[j] = 1;
-                    rc--;
+                    disabledDire--;
+                    vis[i] = 1;
+                }
+                else
+                {
+                    disabledRad++;
+                    rad--;
                 }
             }
             else
             {
-                int j = (i+1)%n;
-                while(j!=i && (senate[j]!='D' or vis[j]))
-                    j = (j+1)%n;
-                if(j!=i)
+                if(disabledRad>0)
                 {
-                    vis[j] = 1;
-                    dc--;
+                    disabledRad--;
+                    vis[i] = 1;
+                }
+                else
+                {
+                    disabledDire++;
+                    dire--;
                 }
             }
+            }
+            if(dire<=0) return "Radiant";
+            if(rad<=0) return "Dire";
         }
-            if(rc==0) return "Dire";
-            if(dc==0) return "Radiant";
-        }
-        }
-        return "fg";
+}
+        return "LOL";
     }
 };
