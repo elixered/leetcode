@@ -7,18 +7,20 @@ public:
             mp[s[i]].push_back(i);
         }
         for(auto word : words){
-            bool flag = true;
+           bool flag = true;
             int prev = -1;
-            for(auto i : word){
-                auto pos = upper_bound(mp[i].begin(),mp[i].end(),prev);
-                if(pos == mp[i].end()){
+            for(auto c:word)
+            {
+                auto pos = upper_bound(mp[c].begin(),mp[c].end(),prev);
+                if(pos==mp[c].end())
+                {
                     flag = false;
                     break;
-                }else{
-                    prev = *pos;
                 }
+                else prev = *pos;
             }
-            if(flag) ans++;
+            if(flag)
+                ans++;
         }
         return ans;
     }
