@@ -1,5 +1,26 @@
 class Solution {
 public:
+    
+    bool check(vector<int>& temp)
+    {
+        int k = temp.size()-1;
+        int mini = *min_element(temp.begin(),temp.end());
+        int maxi = *max_element(temp.begin(),temp.end());
+        if(mini==maxi) return true;
+        if((maxi-mini)%k!=0) return false;
+        int diff = (maxi-mini)/k;
+        unordered_set<int> set;
+        for(int i=0; i<k; i++)
+            set.insert(i);
+        for(auto it:temp)
+        {
+            if((it-mini)%diff !=0) return false;
+            if(set.find((it-mini)/diff)!=set.end())
+                set.erase(set.find((it-mini)/diff));
+        }
+        return set.size()==0;
+    }
+    
     vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) {
         int n = nums.size();
         int m = r.size();
@@ -16,18 +37,7 @@ public:
             {
                 temp.push_back(nums[j]);
             }
-            sort(temp.begin(),temp.end());
-            int diff = temp[1]-temp[0];
-            bool flag = true;
-            for(int i=1; i<temp.size(); i++)
-            {
-                if(temp[i]-temp[i-1]!=diff)
-                {
-                    flag = false;
-                    break;
-                }
-            }
-            ans[i] =  flag;
+            ans[i] = check(temp);
         }
         return ans;
     }
