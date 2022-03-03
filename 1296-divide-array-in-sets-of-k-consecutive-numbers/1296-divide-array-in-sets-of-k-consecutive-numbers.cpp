@@ -1,18 +1,23 @@
 class Solution {
 public:
     bool isPossibleDivide(vector<int>& nums, int k) {
-        int n = nums.size();
-        if(n%k!=0) return false;
-        multiset<int> set(nums.begin(),nums.end());
-        while(!set.empty())
+        map<int,int> map;
+        if(nums.size()%k !=0) return false;
+        for(auto it:nums)
+            map[it]++;
+        for(int j=0; j<nums.size()/k; j++)
         {
-            auto curr = *set.begin()-1;
-            for(int i=0; i<k; i++)
+            for(auto it:map)
             {
-                auto it = set.find(curr+1);
-                if(it==set.end()) return false;
-                set.erase(it);
-                curr++;
+                if(it.second>0)
+                {
+                    for(int i=0; i<k; i++)
+                    {
+                        if(map[it.first+i]<=0) return false;
+                        else map[it.first+i]--;
+                    }
+                    break;
+                }
             }
         }
         return true;
