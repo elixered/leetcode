@@ -1,25 +1,14 @@
 class Solution {
 public:
-    int countVowelStrings(int n) {
-        int dp[n+1][26];
-        memset(dp,0,sizeof(dp));
-        string s = "aeiou";
-        for(auto c:s)
-            dp[1][c-'a'] = 1;
-        for(int i=2; i<=n; i++)
-        {
-            for(auto c:s)
-            {
-                for(auto curr:s)
-                {
-                    if(curr<=c)
-                        dp[i][curr-'a'] += dp[i-1][c-'a'];
-                }
-            }
+   int countVowelStrings(int n) {
+        int a = 1, e = 1, i = 1, o = 1, u = 1;
+        for(int j=2;j<=n;j++){
+            a = a + e + i + o + u;
+            e = e + i + o + u;
+            i = i + o + u;
+            o = o + u;
+            u = u;
         }
-        int ans = 0;
-        for(auto c:s)
-            ans += dp[n][c-'a'];
-        return ans;
+        return a + e + i + o + u;
     }
 };
