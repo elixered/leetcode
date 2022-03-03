@@ -3,21 +3,34 @@ public:
     int minimumMountainRemovals(vector<int>& nums) {
         int n = nums.size();
         vector<int> left(n,1),right(n,1);
-        
+        vector<int> v;
         for(int i=0; i<n; i++)
         {
-            for(int j=0; j<i; j++)
+            if(v.empty() or v.back()<nums[i])
             {
-                if(nums[j] < nums[i])
-                    left[i] = max(left[i], left[j]+1);
+                v.push_back(nums[i]);
+                left[i] = v.size();
+            }
+            else
+            {
+                auto it = lower_bound(v.begin(),v.end(),nums[i]);
+                *it = nums[i];
+                left[i] = it-v.begin()+1;
             }
         }
+        v.clear();
         for(int i=n-1; i>=0; i--)
         {
-            for(int j=n-1; j>i; j--)
+            if(v.empty() or v.back()<nums[i])
             {
-                if(nums[i] > nums[j])
-                    right[i] = max(right[i], right[j]+1);
+                v.push_back(nums[i]);
+                right[i] = v.size();
+            }
+            else
+            {
+                auto it = lower_bound(v.begin(),v.end(),nums[i]);
+                *it = nums[i];
+                right[i] = it-v.begin()+1;
             }
         }
   
