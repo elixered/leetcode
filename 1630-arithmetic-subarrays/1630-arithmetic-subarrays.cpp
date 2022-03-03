@@ -1,44 +1,65 @@
 class Solution {
 public:
-    
-    bool check(vector<int>& temp)
-    {
-        int k = temp.size()-1;
-        int mini = *min_element(temp.begin(),temp.end());
-        int maxi = *max_element(temp.begin(),temp.end());
-        if(mini==maxi) return true;
-        if((maxi-mini)%k!=0) return false;
-        int diff = (maxi-mini)/k;
-        unordered_set<int> set;
-        for(int i=0; i<k; i++)
-            set.insert(i);
-        for(auto it:temp)
-        {
-            if((it-mini)%diff !=0) return false;
-            if(set.find((it-mini)/diff)!=set.end())
-                set.erase(set.find((it-mini)/diff));
-        }
-        return set.size()==0;
-    }
-    
     vector<bool> checkArithmeticSubarrays(vector<int>& nums, vector<int>& l, vector<int>& r) {
-        int n = nums.size();
-        int m = r.size();
-        vector<bool> ans(m,0);
-        for(int i=0; i<m; i++)
+        
+        vector<bool> ans(l.size(),false);
+        for(int i=0;i<l.size();i++)
         {
-            if(r[i]-l[i]+1<2)
-            {
-                ans[i] = false;
-                continue;
-            }
-            vector<int> temp;
-            for(int j=l[i]; j<=r[i]; j++)
-            {
-                temp.push_back(nums[j]);
-            }
-            ans[i] = check(temp);
+            //if the sub array size is equal to 2
+            if(r[i]-l[i]+1==2)
+                ans[i]=true;
+            else if(isArthemetic(nums,l[i],r[i]))
+                ans[i]=true;
         }
         return ans;
+    }
+    
+    //return true if the sub array can be rearranged in a arthemetic sequence
+    bool isArthemetic(vector<int>& nums,int start,int end)
+    {
+        //get the maximum and min elements 
+        int mini=INT_MAX;
+        int maxi=INT_MIN;
+        for(int i=start;i<=end;i++)
+        {
+            mini=min(nums[i],mini);
+            maxi=max(nums[i],maxi);
+        }
+        
+        //when mini==maxi it means all the elements are same in the sub array
+        if(mini==maxi)
+            return true; 
+        
+        //we cant have same common difference betweeen  two adjacent  elements
+        //when we arrange in arthemetic sequence
+        if((maxi-mini)%(end-start)!=0)
+            return false;
+        
+        
+        //the diff between every two integers when we rearrange sub array
+        int diff=(maxi-mini)/(end-start);
+        
+        //to check  if the duplicate elemnts are present
+        //ex- [2,4,6,6]
+        //6 is repeating two times 
+        vector<bool> present(end-start+1,false);
+        for(int i=start;i<=end;i++)
+        {
+            
+            //we cant set a index of nums[i]
+            if((nums[i]-mini)%diff!=0)
+                return false;
+            
+            int ind=(nums[i]-mini)/diff;
+            
+            // same element is alreeady repeated ( 6 in the above  example)
+            if(present[ind])
+                return false;
+            //mark it presence
+            present[ind]=true;
+            
+        }
+        return true;
+        
     }
 };
