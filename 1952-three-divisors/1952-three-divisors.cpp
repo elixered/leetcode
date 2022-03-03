@@ -1,12 +1,19 @@
 class Solution {
 public:
+    
+    bool prime(int x)
+    {
+        if(x<=2) return true;
+        for(int i=2; i*i<=x; i++)
+            if(x%i==0) return false;
+        return true;
+    }
+    
     bool isThree(int n) {
-        int count = 0;
-        for(int i=1; i<=n; i++)
-        {
-            if(n%i==0) count++;
-            if(count>3) return false;
-        }
-        return count==3;
+        if(n<=3) return false;
+        int x = sqrt(n);
+        if(x*x==n && prime(x))
+            return true;
+        return false;
     }
 };
