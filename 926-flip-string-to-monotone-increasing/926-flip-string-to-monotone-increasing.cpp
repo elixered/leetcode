@@ -14,8 +14,8 @@ public:
         int ans = n;
         for(int i=0; i<n; i++)
         {
-            int prevone = i>0?one[i-1]:0;
-            int nextzero = zero[n-1]-(i>0?zero[i-1]:0);
+            int prevone = one[i];
+            int nextzero = zero[n-1]-zero[i];
             ans = min(ans,prevone+nextzero);
         }
         return min({ans,zero[n-1],one[n-1]});
