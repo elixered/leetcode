@@ -16,7 +16,7 @@ public:
             int right = solve(i+1,n,eggs);
             int temp = max(left,right)+1;
             res = min(res,temp);
-            if(left<right)
+            if(left<=right)
                 low = i+1;
             else high = i-1;       
         }
