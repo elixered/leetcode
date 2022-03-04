@@ -1,29 +1,39 @@
 class Solution {
 public:
-    int m = pow(10,9);
-    int dp[100001][101];
-    int solve(int s, int n, int eggs)
-    {
-        if(s>n) return 0;
-        if(eggs==0) return m;
-        if(dp[n-s+1][eggs]!=-1) return dp[n-s+1][eggs];
-        int res = m;
-        int low = s,high = n;
-        while(low<=high)
+    
+    int superEggDrop(int K, int N) {
+        if(N==0||N==1) return N;     //Think for base case
+        if(K==1) return N;
+        
+        vector<vector<int>> dp(K+1,vector<int> (N+1,0));
+      for(int i=0;i<=K;i++)
+        dp[i][0]=0,dp[i][1]=1;   //Filling from base case as if N==0 ans=0 , N==1 ans=1
+      for(int i=0;i<=N;i++)
+        dp[0][i]=0,dp[1][i]=i;   //Filling from base case as if K==0 ans=0 , K==1 ans=N, number of current floor (i)
+        
+        for(int i=2;i<K+1;i++)
         {
-            int i = low + (high-low)/2;
-            int left = solve(s,i-1,eggs-1);
-            int right = solve(i+1,n,eggs);
-            int temp = max(left,right)+1;
-            res = min(res,temp);
-            if(left<=right)
-                low = i+1;
-            else high = i-1;       
+            for(int j=2;j<N+1;j++)
+            {    int l=1,h=j,temp=0,ans=100000;
+                 while(l<=h)
+                 {
+                    int mid=(l+h)/2;
+                    int left= dp[i-1][mid-1]; //egg broken check for down floors of mid
+                    int right= dp[i][j-mid];  // not broken check for up floors of mid
+                    temp=1+max(left,right);
+                    if(left<right){
+                      l=mid+1;                       
+                    }
+                    else                             
+                    {    
+                        h=mid-1;
+                    }
+                    ans=min(ans,temp);               
+                 }
+                 dp[i][j]=ans;
+            }
         }
-        return dp[n-s+1][eggs] = res;
-    }
-    int superEggDrop(int k, int n) {
-         memset(dp,-1,sizeof(dp));
-        return solve(1,n,k);
+        return dp[K][N];
+         
     }
 };
