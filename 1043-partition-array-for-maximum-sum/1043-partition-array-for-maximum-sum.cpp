@@ -1,24 +1,16 @@
 class Solution {
 public:
-    unordered_map<int,int> map;
-    int solve(vector<int>& nums, int idx, int k)
-    {
-        if(idx>=nums.size()) return 0;
-        if(map.find(idx)!=map.end()) return map[idx];
-        int ans = 0;
-        int n = nums.size();
-        int mx = INT_MIN;
-        for(int i=idx; i<min(idx+k,n); i++)
-        {
-            mx = max(mx,nums[i]);
-            int curr = mx*(i-idx+1);
-            curr += solve(nums,i+1,k);
-            ans = max(ans,curr);
+    int maxSumAfterPartitioning(vector<int>& A, int K) {
+        int N = A.size();
+        vector<int> dp(N + 1);
+        for (int i = 1; i <= N; ++i) {
+            int curMax = 0, best = 0;
+            for (int k = 1; k <= K && i - k >= 0; ++k) {
+                curMax = max(curMax, A[i - k]);
+                best = max(best, dp[i - k] + curMax * k);
+            }
+            dp[i] = best; 
         }
-        return map[idx] = ans;
-    }
-    
-    int maxSumAfterPartitioning(vector<int>& nums, int k) {
-        return solve(nums,0,k);
+        return dp[N];
     }
 };
