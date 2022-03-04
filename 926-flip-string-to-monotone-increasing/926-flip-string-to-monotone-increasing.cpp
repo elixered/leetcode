@@ -18,6 +18,6 @@ public:
             int nextzero = zero[n-1]-zero[i];
             ans = min(ans,prevone+nextzero);
         }
-        return min({ans,zero[n-1],one[n-1]});
+        return min(ans,zero[n-1]);
     }
 };
