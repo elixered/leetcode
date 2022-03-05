@@ -2,7 +2,7 @@ class Solution {
 public:
     int ans = 0;
     
-    void solve(set<char> set, string curr, vector<string>& arr, int idx)
+    void solve(unordered_set<char> set, string curr, vector<string>& arr, int idx)
     {
         ans = max(ans,(int)curr.size());
         if(idx>=arr.size()) return;
@@ -23,7 +23,7 @@ public:
     }
     
     int maxLength(vector<string>& arr) {
-        set<char> set;
+        unordered_set<char> set;
         solve(set,"",arr,0);
         return ans;
     }
