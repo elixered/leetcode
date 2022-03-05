@@ -1,30 +1,44 @@
 class Solution {
 public:
-    int ans = 0;
+    int n;
+    int ans=0;
     
-    void solve(unordered_set<char> set, string curr, vector<string>& arr, int idx)
-    {
-        ans = max(ans,(int)curr.size());
-        if(idx>=arr.size()) return;
-        solve(set,curr,arr,idx+1);
-        bool f = true;
-        string s = arr[idx];
-        for(auto c:s)
-        {
-            if(set.find(c)!=set.end())
+    void backtrack(int ind, string curr, vector<string>& arr){
+        if(ind==n){
+            int v=curr.size();
+            cout<<curr<<" ";
+            ans=max(ans, v);
+            return;
+        }
+        int v=arr[ind].size();
+        unordered_map<char, int> m;
+        for(auto &x: curr){
+            m[x]++;
+        }
+        bool f=true; //check if we can add this string to curr
+        for(auto &x: arr[ind]){
+            if(m.count(x))
             {
-                f = false;
+                f=false;
                 break;
             }
-            else set.insert(c);
+            m[x]++;
         }
-        if(f==false) return;
-        solve(set,curr+s,arr,idx+1);
+        if(f){ //since we can add it, now we have two options - to add it or to not add it
+            curr+=arr[ind];
+            backtrack(ind+1, curr, arr);
+            curr=curr.substr(0, curr.size()-v);
+            backtrack(ind+1, curr, arr);
+        }
+        else{ //we can't add it
+            backtrack(ind+1, curr, arr);
+        }
     }
     
     int maxLength(vector<string>& arr) {
-        unordered_set<char> set;
-        solve(set,"",arr,0);
+        n=arr.size();
+        string curr="";
+        backtrack(0, curr, arr);
         return ans;
     }
 };
