@@ -9,14 +9,11 @@ public:
         {
             for(int j=0; j<n; j++)
             {
-                if(j+k<n)
-                ans[i][j+k] = grid[i][j];
-                else
-                {
-                    int c = (j+k%n)%n;
-                    int r = (i+1+(k-n+j)/n)%m;
-                    ans[r][c] =  grid[i][j];
-                }
+                int curr_pos = i*n+j;
+                int next_pos = curr_pos + k;
+                int row = (next_pos/n)%m;
+                int col = (next_pos%n);
+                ans[row][col] = grid[i][j];
             }
         }
         return ans;
