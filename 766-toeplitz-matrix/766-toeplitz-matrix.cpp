@@ -3,28 +3,15 @@ public:
     bool isToeplitzMatrix(vector<vector<int>>& matrix) {
         int m = matrix.size();
         int n = matrix[0].size();
+        unordered_map<int,int> map;
         for(int i=0; i<m; i++)
         {
-            int curr = matrix[i][0];
-            int j = i;
-            int k = 0;
-            while(j<m && k<n)
+            for(int j=0; j<n; j++)
             {
-                if(curr!=matrix[j][k]) return false;
-                j++;
-                k++;
-            }
-        }
-        for(int j=0; j<n; j++)
-        {
-            int curr = matrix[0][j];
-            int row = 0;
-            int col = j;
-            while(row<m && col<n)
-            {
-                if(curr!=matrix[row][col]) return false;
-                row++;
-                col++;
+                int curr = matrix[i][j];
+                if(map.find(i-j) == map.end())
+                    map[i-j]= curr;
+                if(curr != map[i-j]) return false;
             }
         }
         return true;
