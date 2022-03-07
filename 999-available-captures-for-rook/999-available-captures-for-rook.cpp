@@ -1,65 +1,16 @@
 class Solution {
 public:
-    int numRookCaptures(vector<vector<char>>& board) {
-        int m = board.size();
-        int n = board[0].size();
-        int r,c;
-        for(int i=0; i<m; i++)
-        {
-            bool f = false;
-            for(int j=0; j<n; j++)
-            {
-                if(board[i][j]=='R')
-                {
-                    r = i;
-                    c = j;
-                    f = true;
-                    break;
-                }
-            }
-            if(f) break;
-        }
-        int ans = 0;
-        for(int i=r+1; i<m; i++)
-        {
-            if(board[i][c]=='B')
-                break;
-            if(board[i][c]=='p')
-            {
-                ans++;
-                break;
-            }
-        }
-        for(int i=r-1; i>=0; i--)
-        {
-            if(board[i][c]=='B')
-                break;
-            if(board[i][c]=='p')
-            {
-                ans++;
-                break;
-            }
-        }
-        for(int j=c-1; j>=0; j--)
-        {
-            if(board[r][j]=='B')
-                break;
-            if(board[r][j]=='p')
-            {
-                ans++;
-                break;
-            }
-        }
-        for(int j=c+1; j<n; j++)
-        {
-            if(board[r][j]=='B')
-                break;
-            if(board[r][j]=='p')
-            {
-                ans++;
-                break;
-            }
-        }
-        return ans;
-    }
+    int cap(vector<vector<char>>& b, int x, int y, int dx, int dy) {
+  while (x >= 0 && x < b.size() && y >= 0 && y < b[x].size() && b[x][y] != 'B') {
+    if (b[x][y] == 'p') return 1;
+    x += dx, y += dy;
+  }
+  return 0;
+}
+int numRookCaptures(vector<vector<char>>& b) {
+  for (auto i = 0; i < b.size(); ++i)
+    for (auto j = 0; j < b[i].size(); ++j)
+      if (b[i][j] == 'R') return cap(b,i,j,0,1)+cap(b,i,j,0,-1)+cap(b,i,j,1,0)+cap(b,i,j,-1,0);
+  return 0;
+}
 };
