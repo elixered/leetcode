@@ -11,11 +11,10 @@ public:
         {
             for(int j=i+1; j<n; j++)
             {
-                for(int k=j; k<n; k++)
+                int prev = i>0?p[i-1]:0;
+                if((p[j]^prev)==0)
                 {
-                    int prev = i>0?p[i-1]:0;
-                    if((prev^p[j-1]) == (p[j-1]^p[k]))
-                        ans++;
+                    ans += j-i;
                 }
             }
         }
