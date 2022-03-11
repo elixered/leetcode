@@ -25,20 +25,20 @@ public:
         if(k==0) return head;
         ListNode* right = head;
         ListNode* left = head;
-        ListNode* prev = NULL,*left_prev=NULL;
+        ListNode* right_prev = NULL,*left_prev=NULL;
         while(k--)
         {
-            prev = right;
+            right_prev = right;
             right = right->next;
         }
         while(right)
         {
-            prev = right;
+            right_prev = right;
             right = right->next;
             left_prev = left;
             left = left->next;
         }
-        prev->next = head;
+        right_prev->next = head;
         left_prev->next=NULL;
         return left;
     }
