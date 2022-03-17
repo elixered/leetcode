@@ -4,28 +4,22 @@ public:
         int ans = 0;
         int n = s.size();
         stack<int> st;
-        st.push(1);
-        for(int i=1; i<n; i++)
+        for(int i=0; i<n; i++)
         {
-            if(s[i]=='(')
+            if(s[i]==')')
+            {
+                st.pop();
+                continue;
+            }
+            while(i<n && s[i]=='(')
             {
                 if(st.empty())
                     st.push(1);
-                else
-                st.push(st.top()*2);
-            }
-            else
-            {
-                ans += st.top();
-                st.pop();
+                else st.push(st.top()*2);
                 i++;
-                while(i<n && s[i]==')')
-                {
-                    st.pop();
-                    i++;
-                }
-                i--;
             }
+            i--;
+            ans += st.top();
         }
         return ans;
     }
