@@ -19,12 +19,12 @@ public:
             begin = begin->next;
             fast = fast->next;
         }
-        while(fast && fast->next)
+        while(fast )
         {
             slow=slow->next;
             fast = fast->next;
         }
-        swap(begin->val,slow->next->val);
+        swap(begin->val,slow->val);
         return newhead->next;
     }
 };
