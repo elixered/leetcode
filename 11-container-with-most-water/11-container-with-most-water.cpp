@@ -6,10 +6,7 @@ public:
         while(i<j)
         {
             ans = max(min(height[i],height[j])*(j-i),ans);
-            if(height[i]==height[j])
-            {
-                i++;j--;
-            }else
+            
             height[i]>height[j]?j--:i++;
         }
         return ans;
