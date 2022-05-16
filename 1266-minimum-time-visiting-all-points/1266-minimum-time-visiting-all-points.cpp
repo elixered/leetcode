@@ -3,22 +3,8 @@ public:
     
     int solve(int x, int y, int x1, int y1)
     {
-        int signx,signy;
-        if(x1>x) signx=1;
-        else signx=-1;
-        if(y1>y)
-            signy=1;
-        else signy = -1;
-
-            int c = 0;
-            while(y1!=y and x1!=x)
-            {
-                y+=signy;
-                x+=signx;
-                c++;
-            }
-        cout<<max(abs(y1-y),abs(x1-x));
-            return c + max(abs(y1-y),abs(x1-x));
+        
+            return max(abs(y1-y),abs(x1-x));
     }
     
     int minTimeToVisitAllPoints(vector<vector<int>>& points) {
