@@ -1,44 +1,38 @@
 class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        int m = matrix.size();
-        int n = matrix[0].size();
         vector<int> ans;
-        int rounds = (min(m,n)+1)/2;
-        int startRow = 0, endRow = m-1;
-        int startCol = 0, endCol = n-1;
-        while(rounds--)
+        int left =0,top=0;
+        int bottom = matrix.size()-1;
+        int right = matrix[0].size()-1;
+        int dir = 0;
+        while(top<=bottom && left<=right)
         {
-            if(startCol>endCol or startRow>endRow)
-                break;
-            for(int j=startCol; j<=endCol; j++)
+            if(dir==0)
             {
-                ans.push_back(matrix[startRow][j]);
+                for(int i=left;i<=right;i++)
+                    ans.push_back(matrix[top][i]);
+                top++;
             }
-            startRow++;
-            if(startCol>endCol or startRow>endRow)
-                break;
-            for(int i=startRow; i<=endRow; i++)
+            else if(dir==1)
             {
-                ans.push_back(matrix[i][endCol]);
+                for(int i=top;i<=bottom;i++)
+                    ans.push_back(matrix[i][right]);
+                right--;
             }
-            endCol--;
-            if(startCol>endCol or startRow>endRow)
-                break;
-            for(int j=endCol; j>=startCol; j--)
+            else if(dir==2)
             {
-                ans.push_back(matrix[endRow][j]);
+                for(int i=right;i>=left;i--)
+                    ans.push_back(matrix[bottom][i]);
+                bottom--;
             }
-            endRow--;
-            if(startCol>endCol or startRow>endRow)
-                break;
-            for(int i=endRow; i>=startRow; i--)
+            else if(dir==3)
             {
-                ans.push_back(matrix[i][startCol]);
+                for(int i=bottom; i>=top; i--)
+                    ans.push_back(matrix[i][left]);
+                left++;
             }
-            startCol++;
-            if(startCol>endCol or startRow>endRow)
-                break;
+            dir = (dir+1)%4;
         }
         return ans;
     }
