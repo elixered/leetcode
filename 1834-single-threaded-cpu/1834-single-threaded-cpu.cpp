@@ -60,7 +60,6 @@ public:
                 t += pq.top().proc;
                 pq.pop();
             }
-            cout<<t<<" ";
         }
         return ans;
     }
