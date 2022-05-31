@@ -5,6 +5,7 @@ public:
         if(k==0 or k>n) return false;
         int maxi = (1<<(k))-1;
         int mini = 0;
+        if(n-k+1 < maxi-mini+1) return false;
         int curr = 0;
         int prod = 1;
         unordered_set<int> st;
