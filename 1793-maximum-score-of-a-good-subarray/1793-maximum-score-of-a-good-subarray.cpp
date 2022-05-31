@@ -1,23 +1,14 @@
 class Solution {
 public:
-    int maximumScore(vector<int>& heights, int k) {
-        stack<int> st;
-        int n = heights.size();
-        int ans = 0;
-        for(int i=0; i<=n; i++)
-        {
-            while(!st.empty() && (i==n || heights[i]<=heights[st.top()]))
-            {
-                auto idx = st.top();
-                int height = heights[idx];
-                st.pop();
-                int l = st.empty()?-1:st.top();
-                int width = i-l-1;
-                int curr = width*height;
-                if(i>k && l<k)
-                ans = max(ans,curr);
-            }
-            st.push(i);
+    int maximumScore(vector<int>& A, int k) {
+        int i = k - 1, j = k + 1, N = A.size(), ans = A[k], mn = A[k]; 
+        for (int len = 2; len <= N; ++len) {
+            int lmin = min(mn, i >= 0 ? A[i] : 0);
+            int rmin = min(mn, j < N ? A[j] : 0); 
+            if (lmin >= rmin) --i; 
+            else ++j;
+            mn = max(lmin, rmin);
+            ans = max(ans, mn * len);
         }
         return ans;
     }
