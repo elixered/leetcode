@@ -2,12 +2,12 @@ class Solution {
 public:
     bool hasAllCodes(string s, int k) {
         int n = s.size();
-        if(k==0 or k>n) return 0;
+        if(k==0 or k>n) return false;
         int maxi = (1<<(k))-1;
         int mini = 0;
         int curr = 0;
         int prod = 1;
-        set<int> st;
+        unordered_set<int> st;
         for(int i=k-1; i>=0; i--)
         {
             curr += prod*(s[i]-'0');
