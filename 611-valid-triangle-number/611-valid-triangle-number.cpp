@@ -6,15 +6,13 @@ public:
         int cnt = 0;
         for(int i=0; i<n; i++)
         {
+            if(nums[i]==0) continue;
+            int k = i+2;
             for(int j=i+1; j<n; j++)
             {
-                int a = nums[i];
-                int b = nums[j];
-                int c = a+b;
-                auto idx = lower_bound(nums.begin()+j+1,nums.end(),c)-nums.begin();
-                if(idx==n) idx--;
-                else if(nums[idx]>=c) idx--;
-                cnt += idx-j;
+                while(k<n && nums[i]+nums[j]>nums[k])
+                    k++;
+                cnt += k-j-1;
             }
         }
         return cnt;
