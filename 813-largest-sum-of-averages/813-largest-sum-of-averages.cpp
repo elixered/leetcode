@@ -1,35 +1,29 @@
 class Solution {
 public:
-    double ans = 0;
-    vector<double> psum;
-    vector<vector<double>> dp;
-    double solve(vector<int>& nums, int k, int idx)
-    {
-        int n = nums.size();
-        if(idx >= n) return (double)0;
-        if(dp[idx][k]>0) return dp[idx][k];
-        double res = ((psum[n-1]-(idx>0?psum[idx-1]:0))/(n-idx));
-        if(k==1) return dp[idx][k] = res;
-        double curr = 0;
-        
-        for(int i=idx; i<n; i++)
-        {
-            curr += (double)nums[i];
-            double avg = curr/(i-idx+1);
-            res = max(res,solve(nums,k-1,i+1)+avg);
+    double largestSumOfAverages(vector<int>& A, int K) {
+        int n = A.size();
+        vector<int> sum(n + 1, 0);
+        for(int i = 0; i < n; ++i){
+        	sum[i + 1] = sum[i] + A[i];
         }
-        ans = max(ans,res);
-        return dp[idx][k] = res;
-    }
-    
-    double largestSumOfAverages(vector<int>& nums, int k) {
-        int n = nums.size();
-        dp = vector<vector<double>>(n+1,vector<double>(k+1,-1.0));
-        for(auto i:nums)
-            psum.push_back((double)i);
-        for(int i=1; i<n; i++)
-            psum[i] += psum[i-1];
-        solve(nums,k, 0);
-        return dp[0][k];
+        if(K <= 1){
+        	return (1.0 * sum[n]) / n;
+        }
+        if(K >= n){
+        	return sum[n];
+        }
+        vector<vector<double>> dp(n + 1, vector<double>(K + 1, 0.0));
+        for(int i = 1; i <= n; ++i){
+        	dp[i][1] = (1.0 * sum[i]) / i;
+        }
+        for(int k = 2; k <= K; ++k){
+        	for(int i = k; i <= n; ++i){
+        		for(int j = i - 1; j >= k - 1; --j){
+        			dp[i][k] = max(dp[i][k], dp[j][k - 1] + 1.0 * (sum[i] - sum[j]) / (i - j));
+        		}
+        		
+        	}
+        }
+        return dp[n][K];
     }
 };
