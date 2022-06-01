@@ -1,19 +1,38 @@
 class Solution {
 public:
-int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
-    unordered_map<int, int> counts;
-    vector<int> heap;
-    for (auto n : arr)
-        ++counts[n];
-    for (auto &p: counts)
-        heap.push_back(p.second);
-    make_heap(begin(heap), end(heap), greater<int>());
-    while (k > 0) {
-        k -= heap.front();
-        pop_heap(begin(heap), end(heap), greater<int>()); 
-        if (k >= 0)
-            heap.pop_back();
+    struct compare{
+        bool operator()(const pair<int, int>& a, const pair<int, int>& b)
+        {
+            return a.second < b.second;
+        }
+    } compare;
+	
+    int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
+	// Step 1
+        unordered_map<int, int> map;
+        for(int a: arr)
+            map[a]++;
+			
+	// Step 2
+        vector<pair<int, int>> vec;
+        for(auto a: map)
+        {
+            vec.push_back({a.first, a.second});
+        }
+        sort(vec.begin(), vec.end(), compare);
+	
+	// Step 3
+        auto it = vec.begin();
+        int res = vec.size();
+        while(it != vec.end() && k-- > 0)
+        {
+            it->second--;
+            if(it->second == 0)
+            {
+                it++;
+                res--;
+            }
+        }
+        return res;            
     }
-    return heap.size();
-}
 };
