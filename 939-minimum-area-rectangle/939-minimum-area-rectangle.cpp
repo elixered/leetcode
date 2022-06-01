@@ -3,7 +3,7 @@ public:
     int minAreaRect(vector<vector<int>>& points) {
         int n = points.size();
         int ans = pow(10,9);
-        map<int,set<int>> xmap;
+        unordered_map<int,unordered_set<int>> xmap;
         for(auto p:points)
             xmap[p[0]].insert(p[1]);
         for(int i=0; i<n; i++)
