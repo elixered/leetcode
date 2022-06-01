@@ -22,7 +22,6 @@ public:
                 c++;
                 while(j<n && board[i][j]=='X')
                 {
-                    board[i][j] = '0';
                     j++;
                 }
             }
@@ -44,8 +43,13 @@ public:
                     continue;
                 }
                 c++;
+                int sz = 0;
                 while(i<m && board[i][j]=='X')
+                {
                     i++;
+                    sz++;
+                }
+                if(sz==1) c--;
             }
             count += c;
         }
