@@ -1,6 +1,12 @@
 int mat[26][26];
 
-static bool comp_(char a, char b, int i){
+
+
+
+
+class Solution {
+public:
+   static bool comp_(char a, char b, int i){
     if(i==26){
         return a<b;
     }
@@ -11,15 +17,11 @@ static bool comp_(char a, char b, int i){
         return false;
     }
     return comp_(a,b,i+1);
-        
-}
-
-static bool comp(char a, char b){
+    }
+    
+    static bool comp(char a, char b){
     return comp_(a,b,0);
 }
-
-class Solution {
-public:
     string rankTeams(vector<string>& votes) {
         int n = votes[0].length();
         for(int i=0;i<26;i++){
