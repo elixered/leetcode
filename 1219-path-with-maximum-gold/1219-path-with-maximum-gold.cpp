@@ -7,20 +7,20 @@ public:
     {
         return x>=0 && y>=0 && x<m && y<n;
     }
-    int dfs(vector<vector<int>>& grid, int r, int c, vector<vector<int>>& vis)
+    int dfs(vector<vector<int>>& grid, int r, int c)
     {
         int curr = 0;
-        vis[r][c] = 1;
+        grid[r][c] = - grid[r][c];
         for(int i=0; i<4; i++)
         {
             int x = r + dir[i];
             int y = c + dir[i+1];
-            if(valid(x,y) && vis[x][y]==0 && grid[x][y]!=0)
+            if(valid(x,y) && grid[x][y]>0)
             {
-                curr = max(curr,dfs(grid,x,y,vis));
+                curr = max(curr,dfs(grid,x,y));
             }
         }
-        vis[r][c] = 0;
+        grid[r][c] = -grid[r][c];
         ans = max(ans,curr+grid[r][c]);
         return curr+grid[r][c];
     }
@@ -33,8 +33,7 @@ public:
             for(int j=0; j<n; j++)
             {
                 if(grid[i][j]==0) continue;
-                vector<vector<int>> vis(m,vector<int>(n,0));
-                dfs(grid,i,j,vis);
+                dfs(grid,i,j);
             }
         }
         return ans;
