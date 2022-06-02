@@ -1,6 +1,6 @@
 int mat[26][26];
 
-bool comp_(char a, char b, int i){
+static bool comp_(char a, char b, int i){
     if(i==26){
         return a<b;
     }
@@ -14,7 +14,7 @@ bool comp_(char a, char b, int i){
         
 }
 
-bool comp(char a, char b){
+static bool comp(char a, char b){
     return comp_(a,b,0);
 }
 
@@ -31,9 +31,9 @@ public:
                 mat[vote[i]-'A'][i]++;
             }
         }
-        
-        sort(votes[0].begin(),votes[0].end(),comp);
+        string s = votes[0];
+        sort(s.begin(),s.end(),comp);
       
-        return votes[0];
+        return s;
     }
 };
