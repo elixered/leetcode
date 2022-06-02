@@ -35,7 +35,6 @@ public:
         int i=0,t=0;
         while(i<n)
         {
-            t = max(t,i);
             if(availQ.empty())
             {
                 t = busyQ.top().freetime;
@@ -45,12 +44,15 @@ public:
                 availQ.push(busyQ.top());
                 busyQ.pop();
             }
+            while(i<=min(t,n-1) && availQ.size()){
             auto nd = availQ.top();
             availQ.pop();
             nd.freetime = t+tasks[i];
             busyQ.push(nd);
             ans[i] = nd.idx;
             i++;
+            }
+            t++;
         }
         return ans;
     }
