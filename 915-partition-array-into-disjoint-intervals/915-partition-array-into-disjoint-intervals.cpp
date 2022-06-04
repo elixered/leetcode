@@ -1,17 +1,22 @@
 class Solution {
 public:
     int partitionDisjoint(vector<int>& nums) {
+        int curr_max = nums[0];
+        int possible_max = nums[0];
         int n = nums.size();
-        int maximum = nums[0];
-        vector<int> minimum = nums;
-        for(int i=n-2; i>=0; i--)
-            minimum[i] = min(minimum[i+1],nums[i]);
-        for(int i=1; i<n; i++)
+        int ans = 1;
+        for(int i=1; i<n-1; i++)
         {
-            if(maximum <= minimum[i])
-                return i;
-            else maximum = max(maximum,nums[i]);
+            if(nums[i]<curr_max)
+            {
+                curr_max = possible_max;
+                ans = i+1;
+            }
+            else
+            {
+                possible_max = max(possible_max,nums[i]);
+            }
         }
-        return n;
+        return ans;
     }
 };
