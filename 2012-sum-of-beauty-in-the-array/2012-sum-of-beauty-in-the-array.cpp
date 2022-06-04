@@ -1,18 +1,20 @@
 class Solution {
 public:
     int sumOfBeauties(vector<int>& nums) {
-        int ans = 0;
-        multiset<int> before,after(nums.begin(),nums.end());
-        before.insert(nums[0]);
-        after.erase(after.find(nums[0]));
-        for(int i=1; i<nums.size()-1; i++)
+        int n = nums.size();
+        vector<int> maximum = nums, minimum = nums;
+        for(int i=1; i<n; i++)
         {
-            after.erase(after.find(nums[i]));
-            if(*after.begin()>nums[i] && *before.rbegin()<nums[i])
+            maximum[i] = max(maximum[i-1],maximum[i]);
+            minimum[n-i-1] = min(minimum[n-1-i],minimum[n-i]);
+        }
+        int ans = 0;
+        for(int i=1; i<n-1; i++)
+        {
+            if(nums[i]>maximum[i-1] && nums[i]<minimum[i+1])
                 ans+=2;
-            else if(nums[i-1]<nums[i] && nums[i]<nums[i+1])
-                ans++;
-            before.insert(nums[i]);
+            else if(nums[i]>nums[i-1] && nums[i]<nums[i+1])
+                ans+=1;
         }
         return ans;
     }
