@@ -46,7 +46,6 @@ public:
     vector<vector<string>> solveNQueens(int n) {   
         vector<vector<string>> ans;
         vector<string> board(n,string(n,'.'));
-       
         vector<int> left(n,0), dia1(2*n-1,0), dia2(2*n-1,0);
         solve(ans,board,left,dia1,dia2,0,n);
         return ans;
