@@ -76,6 +76,17 @@ public:
         // if(index==size-1) tail = prev;
         delete curr;
     }
+    ~MyLinkedList()
+    {
+        Node *p = dummy;
+        // Delete node at head while head is not null
+        while (dummy!=nullptr)
+        {
+            dummy= dummy->next;
+            delete p;
+            p=dummy;
+        }
+    }
 };
 
 /**
