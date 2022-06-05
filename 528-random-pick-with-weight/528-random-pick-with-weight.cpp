@@ -9,8 +9,8 @@ public:
     
     int pickIndex() {
         int m = p.back();
-        int r = rand()%m;
-        return upper_bound(p.begin(),p.end(),r)-p.begin();
+        int r = rand()%m+1;
+        return lower_bound(p.begin(),p.end(),r)-p.begin();
     }
 };
 
