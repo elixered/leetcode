@@ -13,10 +13,9 @@ class Solution {
 public:
     Node* flatten(Node* head) {
         if(head==NULL) return NULL;
-        Node* c = head->child;
-        head->child = NULL;
-        Node* chi = flatten(c);
+        Node* chi = flatten(head->child);
         Node* nex = flatten(head->next);
+        head->child = NULL;
         if(!chi && !nex) return head;
         else
         if(chi==NULL)
