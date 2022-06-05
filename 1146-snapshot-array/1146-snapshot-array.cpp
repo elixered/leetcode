@@ -1,38 +1,16 @@
 class SnapshotArray {
 public:
-    int id;
-    vector<vector<vector<int>>> nums;
-    SnapshotArray(int length) {
-        nums.resize(length);
-        id = 0;
-    }
-    
-    void set(int index, int val) {
-        nums[index].push_back({id,val});
-    }
-    
-    int snap() {
-        id++;
-        return id-1;
-    }
-    
-    int get(int index, int snap_id) {
-        int low = 0;
-        int high = nums[index].size()-1;
-        int ans = 0;
-        while(low<=high)
-        {
-            int mid = low+(high-low)/2;
-            if(nums[index][mid][0]<=snap_id)
-            {
-                ans = nums[index][mid][1];
-                low = mid+1;
-            }
-            else
-                high = mid-1;
-        }
-        return ans;
-    }
+    unordered_map<int, map<int, int>> a;
+int cur_snap = 0;
+SnapshotArray(int length) {}
+int snap() { return cur_snap++; }
+void set(int index, int val) { 
+  a[index][cur_snap] = val; 
+}
+int get(int index, int snap_id) {
+  auto it = a[index].upper_bound(snap_id);
+  return it == begin(a[index]) ? 0 : prev(it)->second;
+}
 };
 
 /**
