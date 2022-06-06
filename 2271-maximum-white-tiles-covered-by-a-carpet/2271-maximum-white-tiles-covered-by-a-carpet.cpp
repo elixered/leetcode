@@ -3,7 +3,7 @@ public:
     int maximumWhiteTiles(vector<vector<int>>& tiles, int k) {
         sort(tiles.begin(),tiles.end());
         int res = 0, j = 0, cover = 0;
-        for(int i=0; i<tiles.size() && res<k; )
+        for(int i=0; i<tiles.size() && j<tiles.size() ; )
         {
             if(tiles[j][0] + k > tiles[i][1])
             {
