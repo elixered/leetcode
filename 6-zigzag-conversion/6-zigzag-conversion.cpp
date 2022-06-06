@@ -1,27 +1,30 @@
 class Solution {
 public:
-    string convert(string s, int r) {
-        string ans;
-        int n = s.size();
-        vector<string> grid(n);
-        int i = 0;
-        while(i<n)
-        {
-            int j = 0;
-            while(j<r)
-            {
-                if(i>=n) break;
-                grid[j++].push_back(s[i++]);
-            }
-            j = r-2;
-            while(j>0)
-            {
-                if(i>=n) break;
-                grid[j--].push_back(s[i++]);
+    string convert(string s, int numRows) {
+        string result="";
+        if(numRows==1)
+			return s;
+        int step1,step2;
+        int len=s.size();
+        for(int i=0;i<numRows;++i){
+            step1=(numRows-i-1)*2;
+            step2=(i)*2;
+            int pos=i;
+            if(pos<len)
+                result+=s.at(pos);
+            while(1){
+                pos+=step1;
+                if(pos>=len)
+                    break;
+				if(step1)
+					result+=s.at(pos);
+                pos+=step2;
+                if(pos>=len)
+                    break;
+				if(step2)
+					result+=s.at(pos);
             }
         }
-        for(auto it:grid)
-            ans += it;
-        return ans;
+        return result;
     }
 };
