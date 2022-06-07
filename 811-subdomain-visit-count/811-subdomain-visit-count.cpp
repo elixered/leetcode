@@ -1,50 +1,19 @@
 class Solution {
 public:
-    vector<string> subdomainVisits(vector<string>& domains) {
-        unordered_map<string,int> mp;
-        for(auto it:domains)
-        {
-            int n = it.size();
-            int i = 0;
-            int x = 0;
-            vector<int> breakpoints;
-            while(i<n && it[i]>='0' && it[i]<='9')
-            {
-                x = x*10 + it[i]-'0';
-                i++;
-            }
-            cout<<x;
-            breakpoints.push_back(i);
-            while(i<n)
-            {
-                if(it[i]=='.')
-                    breakpoints.push_back(i);
-                i++;
-            }
-            string prev,curr;
-            for(int j=breakpoints.size()-1; j>=0; j--)
-            {
-                int idx = breakpoints[j]+1;
-                if(prev=="")
-                {
-                    prev = it.substr(idx);
-                    mp[prev]+=x;
-                }
-                else
-                {
-                    curr = it.substr(idx);
-                    mp[curr]+=x;
-                    prev = curr;
-                    curr = "";
-                }
-            }
+       vector<string> subdomainVisits(vector<string>& cpdomains) {
+        unordered_map<string, int> count;
+        for (auto cd : cpdomains) {
+            int i = cd.find(" ");
+            int n = stoi(cd.substr (0, i));
+            string s = cd.substr (i + 1);
+            for (int i = 0; i < s.size(); ++i)
+                if (s[i] == '.')
+                    count[s.substr(i + 1)] += n;
+            count[s] += n;
         }
-        vector<string>ans;
-        for(auto it:mp)
-        {
-            string s = to_string(it.second)+" "+it.first;
-            ans.push_back(s);
-        }
-        return ans;
+        vector<string> res;
+        for (auto k : count)
+            res.push_back (to_string(k.second) + " " + k.first);
+        return res;
     }
 };
