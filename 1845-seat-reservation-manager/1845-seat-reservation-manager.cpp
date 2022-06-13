@@ -1,38 +1,19 @@
 class SeatManager {
 public:
-    vector<int> reserved;
-    priority_queue<int,vector<int>,greater<int>> pq;
+    
+    bitset<100000> res;
     SeatManager(int n) {
-        reserved.resize(n+1,0);
-        for(int i=1; i<=n; i++)
-            pq.push(i);
+        res.set(); // set all the bits
     }
     
     int reserve() {
-        auto idx = 1;
-        while(!pq.empty())
-        {
-            auto it = pq.top();
-            pq.pop();
-            if(!reserved[it])
-            {
-                idx = it;
-                break;
-            }
-        }
-        reserved[idx] = 1;
-        return idx;
+        int pos = res._Find_first(); //find the first bit set
+        res.reset(pos); // reset this to zero, as it is reserved.
+        return pos+1;
     }
     
     void unreserve(int seatNumber) {
-        reserved[seatNumber] = 0;
-        pq.push(seatNumber);
+        
+        res.set(seatNumber-1); // set it to on again, as sit is available.
     }
 };
-
-/**
- * Your SeatManager object will be instantiated and called as such:
- * SeatManager* obj = new SeatManager(n);
- * int param_1 = obj->reserve();
- * obj->unreserve(seatNumber);
- */
