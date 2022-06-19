@@ -1,33 +1,67 @@
-typedef pair<int,int> pii;
 class Solution {
 public:
-    int minimumCost(int N, vector<vector<int>>& connections) {
-        vector<vector<pii>> mp(N+1);
-        vector<bool> visited(N+1, false);
-        vector<int> minCost(N+1, INT_MAX);
-        for (auto& edge : connections) {
-            mp[edge[0]].push_back({edge[2], edge[1]});
-            mp[edge[1]].push_back({edge[2], edge[0]});
+    class UnionFind {
+public:
+    UnionFind(int sz) : root(sz), rank(sz) {
+        size = sz;
+        for (int i = 0; i < sz; i++) {
+            root[i] = i;
+            rank[i] = 1;
         }
-        priority_queue<pii, vector<pii>, greater<pii>> pq;
-        pq.push({0,1});
-        int numVisited = 0, res = 0;
-        while (numVisited < N && !pq.empty()) {
-            int cost = pq.top().first, city = pq.top().second;
-            pq.pop();
-            if (visited[city]) continue;
-            visited[city] = true;
-            numVisited++;
-            res += cost;
-            for (auto& n : mp[city]) {
-                cost = n.first;
-                city = n.second;
-                if (!visited[city] && cost < minCost[city]) {
-                    minCost[city] = cost;
-                    pq.push({cost, city});
-                }
+    }
+
+    int find(int x) {
+        if (x == root[x]) {
+            return x;
+        }
+        return root[x] = find(root[x]);
+    }
+
+    void connect(int x, int y) {
+        int rootX = find(x);
+        int rootY = find(y);
+        if (rootX != rootY) {
+            if (rank[rootX] > rank[rootY]) {
+                root[rootY] = rootX;
+            } else if (rank[rootX] < rank[rootY]) {
+                root[rootX] = rootY;
+            } else {
+                root[rootY] = rootX;
+                rank[rootX] += 1;
             }
         }
-        return numVisited == N ? res : -1;
+        size--;
+    }
+
+    bool connected(int x, int y) {
+        return find(x) == find(y);
+    }
+        
+        int getSize()
+        {
+            return size;
+        }
+
+private:
+    int size;
+    vector<int> root;
+    vector<int> rank;
+};
+    int minimumCost(int n, vector<vector<int>>& c) {
+        UnionFind uf(n+1);
+        auto cmp = [](vector<int>& a, vector<int>& b){
+            return a[2]<b[2];
+        };
+        int ans = 0;
+        sort(c.begin(),c.end(),cmp);
+        int count = 1;
+        for(auto& e:c){
+            if(!uf.connected(e[0],e[1])){
+                uf.connect(e[0],e[1]);
+                ans += e[2];
+                count++;
+            }
+        }
+        return count==n?ans:-1;
     }
 };
