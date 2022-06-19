@@ -1,24 +1,36 @@
 class Solution {
 public:
-     unordered_map<string,bool> mp;
-    bool isScramble(string s1, string s2) {
-        int n = s1.size();
-        if(n!=s2.size()) return false;
-        if(s1==s2) return true;
-        bool flag = false;
-        string key = s1+" "+s2;
-        if(mp.find(key)!=mp.end())
-            return mp[key];
-        for(int i=1; i<n; i++){
-            string x1 = s1.substr(0,i);
-            string y1 = s1.substr(i);
-            string x2 = s2.substr(0,i);
-            string y2 = s2.substr(i);
-            string y3 = s2.substr(0,n-i);
-            string x3 = s2.substr(n-i);
-            flag = flag || (isScramble(x1,x2) && isScramble(y1,y2));
-            flag = flag || (isScramble(x1,x3) && isScramble(y1,y3));
+    int dp[31][31][31];                                //-1 non processed, 1 matches, 0 not matches
+    
+    int fn(int start1, int start2, int len, string&s1, string& s2){
+        int &res = dp[start1][start2][len];                       //Now res will refer to our current state
+        
+        //base case 0
+        if(len==1){
+            if(s1[start1]==s2[start2] ) return res = 1;
+            else return res=0;
         }
-        return mp[key] =  flag;
+		
+        //base case 1
+        if(res!=-1) return res;                       //already processed, reuse it
+		
+        res = 0;
+        //without swap
+        for(int i=1; i<len; i++){
+            int decision = ( fn(start1, start2, i, s1, s2) & fn(start1+i, start2+i, len-i, s1, s2) );     //true only if x and y both matches
+            res |= decision;
+        }
+		
+        //with swap
+        for(int i=1; i<len; i++){
+            int decision = fn(start1, start2+len-i, i, s1, s2) & fn(start1+i, start2, len-i, s1, s2);     //true only if y and x matches
+            res |= decision;
+        }
+        return res;
+		
+    }
+    bool isScramble(string s1, string s2) {
+        memset(dp, -1, sizeof(dp) );
+        return fn(0, 0, s1.size(), s1, s2);
     }
 };
