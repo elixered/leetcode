@@ -11,45 +11,20 @@
  */
 class Solution {
 public:
-    unordered_map<TreeNode*,TreeNode*> parent;
-    unordered_map<TreeNode*,int> outdegree;
+    vector<vector<int>> ans;
     
-    void inorder(TreeNode* root){
-        if(root==NULL) return;
-        outdegree[root] = 0;
-        if(root->left){
-            parent[root->left] = root;
-            outdegree[root]++;
-            inorder(root->left);
-        }
-        if(root->right){
-            parent[root->right] = root;
-            outdegree[root]++;
-            inorder(root->right);
-        }
+    int dfs(TreeNode* root){
+        if(!root) return -1;
+        
+        int level = max(dfs(root->left),dfs(root->right))+1;
+        if(level == ans.size())
+            ans.push_back(vector<int>());
+        ans[level].push_back(root->val);
+        return level;
     }
     
     vector<vector<int>> findLeaves(TreeNode* root) {
-        vector<vector<int>> ans;
-        inorder(root);
-        queue<TreeNode*> q;
-        for(auto it:outdegree){
-            if(it.second==0)
-                q.push(it.first);
-        }
-        while(q.size()){
-            vector<int> temp;
-            int m = q.size();
-            while(m--){
-                auto x = q.front();
-                q.pop();
-                temp.push_back(x->val);
-                outdegree[parent[x]]--;
-                if(outdegree[parent[x]]==0)
-                    q.push(parent[x]);
-            }
-            ans.push_back(temp);
-        }
+        dfs(root);
         return ans;
     }
 };
