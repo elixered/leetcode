@@ -1,23 +1,22 @@
 class HitCounter {
 public:
-    int hits;
-    map<int,int> mp;
+    deque<pair<int,int>> dq;
+    int hits = 0;
     HitCounter() {
-        hits = 0;
+        
     }
     
     void hit(int timestamp) {
+        if(dq.empty() or dq.back().first<timestamp)
+            dq.push_back({timestamp,1});
+        else (&dq.back())->second++;
         hits++;
-        mp[timestamp]++;
     }
     
     int getHits(int timestamp) {
-        auto itr = mp.begin();
-        while(itr!=mp.end() && itr->first <=timestamp-300){
-            auto curr = itr;
-            itr = next(itr);
-            hits -= curr->second;
-            mp.erase(curr);
+        while(!dq.empty() && dq.front().first <= timestamp-300){
+            hits -= dq.front().second;
+            dq.pop_front();
         }
         return hits;
     }
