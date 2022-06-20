@@ -1,6 +1,1 @@
-# Write your MySQL query statement below
-UPDATE Salary 
-set sex = case sex
-when 'm' then 'f'
-else 'm'
-end;
+update salary set sex = CHAR(ASCII('f') ^ ASCII('m') ^ ASCII(sex));
