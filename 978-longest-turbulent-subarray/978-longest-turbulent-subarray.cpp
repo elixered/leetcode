@@ -1,33 +1,16 @@
 class Solution {
 public:
-    int maxTurbulenceSize(vector<int>& nums) {        
-        int n = nums.size();
-        if(n<2) return n;
-        if(n==2) return 1 + (nums[0]!=nums[1]);
-        int prev = 0;
-        if(nums[1]-nums[0] > 0) prev = 1;
-        else if(nums[1]-nums[0] < 0) prev = -1;
-        int ans = 1;
-        int curr = 1+(nums[0]!=nums[1]);
-        int j=2,i=0;
-        while(j < n){
-            int diff = nums[j] - nums[j-1];
-            if(diff*prev < 0)
-            {
-                curr++;
-                prev = -prev;
-            }
-            else{
-                ans = max(ans,curr);
-                curr = 1+(nums[j]!=nums[j-1]);
-                if(nums[j]==nums[j-1])
-                    prev = 0;
-                else
-                prev = diff>0?1:-1;
-            }
-            j++;
+   int maxTurbulenceSize(vector<int>& A) {
+        vector<vector<int>> dp(A.size(), vector<int>(2, 1));
+        int res = 1;
+        for (int i = 1; i < A.size(); i++) {
+            if (A[i] > A[i - 1])
+                dp[i][0] = dp[i - 1][1] + 1;
+            else if (A[i] < A[i - 1]) 
+                dp[i][1] = dp[i - 1][0] + 1;
+            res = max(res, max(dp[i][0], dp[i][1]));   
         }
-        ans = max(ans,curr);
-        return ans;
+        return res;
     }
+
 };
