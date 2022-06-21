@@ -1,43 +1,37 @@
-class Solution {
-public:
-    int m,n;
-    const int MAX = 1000;
-    
-    bool allZero(vector<vector<int>> grid){
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++)
-                if(grid[i][j]) return false;
-        }
-        return true;
-    }
-    
-    int solve(vector<vector<int>> grid, int x, int y){
-        if(y==n){
-            x++;
-            y = 0;
-        }
-        if(x==m){
-            if(allZero(grid)) return 0;
-            else return MAX;
-        }
-        int noChange = solve(grid,x,y+1);
+class Solution 
+{
+    public:
+    int dp[32768],m,n;
+    int dfs(int state)
+    {
+        if(state==0) return 0;
+        if(dp[state]!=INT_MAX) return dp[state];
         
-        int change = MAX;
-        if(grid[x][y]){
-            for(int i=0; i<m; i++){
-                for(int j=0; j<n; j++){
-                    if(i==x or j==y)
-                        grid[i][j] = 0;
+        for(int i=0;i<m;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(state&(1<<(i*n+j))) // if grid[i][j] is 1
+                {
+                    int t=state;
+                    for(int k=0;k<n;k++) t&=~(1<<(i*n+k)); // set the same row bits to 0
+                    for(int k=0;k<m;k++) t&=~(1<<(k*n+j)); // set the same column bits to 0
+                    dp[state]=min(dp[state],1+dfs(t));
                 }
             }
-            change = solve(grid,x,y+1)+1;
         }
-        return min(change,noChange);
+        return dp[state];
     }
-    
-    int removeOnes(vector<vector<int>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
-        return solve(grid,0,0);
+    int removeOnes(vector<vector<int>>& grid) 
+    {
+        m=grid.size(),n=grid[0].size();
+        for(int i=0;i<32768;i++) dp[i]=INT_MAX;
+        
+        int state=0;
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++)
+                if(grid[i][j]) state|=1<<(i*n+j); // bit[i*n+j] should be set if grid[i][j]=1
+
+        return dfs(state);
     }
 };
