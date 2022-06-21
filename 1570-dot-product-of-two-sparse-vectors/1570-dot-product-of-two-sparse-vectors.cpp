@@ -1,16 +1,19 @@
 class SparseVector {
 public:
-    vector<int> arr;
+    unordered_map<int,int> mp;
     SparseVector(vector<int> &nums) {
-        arr = nums;
+        for(int i=0; i<nums.size(); i++)
+            if(nums[i])
+                mp[i] = nums[i];
     }
     
     // Return the dotProduct of two sparse vectors
     int dotProduct(SparseVector& vec) {
-        int n = arr.size();
         int ans = 0;
-        for(int i=0; i<n; i++)
-            ans += vec.arr[i]*arr[i];
+        for(auto it:mp){
+            if(vec.mp.find(it.first)!=vec.mp.end())
+                ans += mp[it.first]*vec.mp[it.first];
+        }
         return ans;
     }
 };
