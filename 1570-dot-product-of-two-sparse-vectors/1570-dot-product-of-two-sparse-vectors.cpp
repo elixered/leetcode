@@ -1,18 +1,30 @@
 class SparseVector {
 public:
-    unordered_map<int,int> mp;
+    typedef pair<int,int> ppi;
+    vector<ppi> arr;
     SparseVector(vector<int> &nums) {
         for(int i=0; i<nums.size(); i++)
             if(nums[i])
-                mp[i] = nums[i];
+                arr.push_back({i,nums[i]});
     }
     
     // Return the dotProduct of two sparse vectors
     int dotProduct(SparseVector& vec) {
+        int i=0,j=0;
+        int n = arr.size();
+        int m = vec.arr.size();
         int ans = 0;
-        for(auto it:mp){
-            if(vec.mp.find(it.first)!=vec.mp.end())
-                ans += mp[it.first]*vec.mp[it.first];
+        while(i<n && j<m){
+            cout<<i<<" "<<j<<" ";
+            if(arr[i].first==vec.arr[j].first)
+            {
+                ans += arr[i].second*vec.arr[j].second;
+                i++;
+                j++;
+            }
+            else if(arr[i].first < vec.arr[j].first)
+                i++;
+            else j++;
         }
         return ans;
     }
