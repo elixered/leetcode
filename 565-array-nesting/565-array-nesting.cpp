@@ -7,7 +7,6 @@ public:
             int count = 0;
             int j = i;
             while(nums[j]!=INT_MAX){
-                cout<<j<<" ";
                 count++;
                 int curr = j;
                 j = nums[j];
