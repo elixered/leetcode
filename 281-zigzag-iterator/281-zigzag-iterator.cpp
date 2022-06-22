@@ -1,30 +1,31 @@
 class ZigzagIterator {
 public:
-    int i,j,m,n;
-    bool turn1;
-    vector<int> v1,v2;
+    vector<vector<int>> v;
+    queue<pair<int,int>> q;
+    int sz;
     ZigzagIterator(vector<int>& v1, vector<int>& v2) {
-        i = 0, j = 0;
-        m = v1.size();
-        n = v2.size();
-        turn1 = true;
-        this->v1 = v1;
-        this->v2 = v2;
+        q.push({0,0});
+        q.push({1,0});
+        v.push_back(v1);
+        v.push_back(v2);
+        sz = v1.size()+v2.size();
     }
 
     int next() {
-        if(turn1){
-            turn1 = false;
-            return i<m ? v1[i++]:v2[j++];
+        while(!q.empty()){
+            auto f = q.front();
+            q.pop();
+            if( f.second < v[f.first].size()){
+                q.push({f.first,f.second+1});
+                sz--;
+                return v[f.first][f.second];
+            }
         }
-        else{
-            turn1 = true;
-            return j<n ? v2[j++]:v1[i++];
-        }
+        return -1;
     }
 
     bool hasNext() {
-        return i<m or j<n;
+        return sz>0;
     }
 };
 
