@@ -10,17 +10,16 @@ public:
         while (!pq.empty()) {
             auto cur = pq.top();
             pq.pop();
-            if (cur[1] == n-1 && cur[2] == n-1) return ans;
-            visited[cur[1]][cur[2]] = 1;
             ans = max(ans, cur[0]);
             for (int i = 0; i < 4; ++i) {
                 int r = cur[1] + dir[i], c = cur[2] + dir[i+1];
                 if (r >= 0 && r < n && c >= 0 && c < n && visited[r][c] == 0) {
-                    
+                    if (r == n-1 && c == n-1) return ans;
                     pq.push({grid[r][c], r, c});
+                    visited[r][c] = 1;
                 }
             }
         }
-        return -1;
+        return ans;
     }
 };
