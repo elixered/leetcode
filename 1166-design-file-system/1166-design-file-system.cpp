@@ -1,24 +1,59 @@
 class FileSystem {
 public:
-    unordered_map<string,int> mp;
+    
+    class Node{
+        public:
+        int value;
+        unordered_map<string,Node*>  children;
+        Node(int value){
+            this->value = value;
+        }
+    };
+    
+    
     FileSystem() {
-        mp[""] = 1;
+        root = new Node(-1);
     }
     
     bool createPath(string path, int value) {
-        if(mp.find(path) != mp.end()) return false;
-        int n = path.size();
-        if(n<=1 or path[0]!='/') return false;
-        string s = path;
-        while(s.size() && s.back()!='/') s.pop_back();
-        if(s.size()) s.pop_back();
-        if(mp.find(s) == mp.end()) return false;
-        mp[path] = value;
-        return true;
+        vector<string> paths = split(path);
+        Node* curr = root;
+        int i = 0;
+        int n = paths.size();
+        for(i=0; i<n; i++){
+            string p = paths[i];
+            if(!curr->children[p]) {
+                break;
+            }
+            curr = curr->children[p];
+        }
+        if(i==n-1){
+            curr->children[paths[i]] = new Node(value);
+            return true;
+        }
+        return false;
     }
     
     int get(string path) {
-        return mp.find(path) == mp.end() ? -1:mp[path];
+        vector<string> paths = split(path);
+        Node* curr = root;
+        for(auto p:paths){
+            if(!curr->children[p]) return -1;
+            curr = curr->children[p];
+        }
+        return curr->value;
+    }
+private:
+    Node* root;
+    vector<string> split(string s){
+        s = s.substr(1);
+        stringstream ss(s);
+        string word;
+        vector<string> ans;
+        while(getline(ss,word,'/')){
+            ans.push_back(word);
+        }
+        return ans;
     }
 };
 
