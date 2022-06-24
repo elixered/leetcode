@@ -7,7 +7,7 @@ WHERE
             o.sales_id
         FROM
             orders o
-                 JOIN
-            company c ON o.com_id = c.com_id
+                Natural JOIN
+            company c
         WHERE
             c.name = 'RED')
