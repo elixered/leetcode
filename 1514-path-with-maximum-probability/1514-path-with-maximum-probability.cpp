@@ -22,6 +22,7 @@ public:
             int node = curr.second;
             if(vis[node]) continue;
             vis[node] = true;
+            if(node==end) return probab;
             for(auto nb:adj[node]){
                 int child = nb.second;
                 double w = nb.first;
