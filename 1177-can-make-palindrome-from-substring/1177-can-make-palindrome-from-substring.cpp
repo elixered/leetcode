@@ -1,29 +1,25 @@
 class Solution {
 public:
     vector<bool> canMakePaliQueries(string s, vector<vector<int>>& queries) {
-        int n = s.size();
-        vector<vector<int>> count(n,vector<int>(26,0));
-        count[0][s[0]-'a']++;
-        for(int i=1; i<n; i++){
-            for(int j=0; j<26; j++){
-                count[i][j] = count[i-1][j];
-            }
-            count[i][s[i]-'a']++;
+        int n=s.size(),i;
+        bitset<26> dp[n];
+        
+       dp[0][s[0]-'a']=1;
+        //cout<<dp[0]<<"\n";
+        for(i=1;i<n;i++)
+        {
+           // cout<<(1<<(s[i]-'a'))<<"\n";
+            dp[i]=dp[i-1];
+            dp[i]^=(1<<(s[i]-'a'));//toggle
+                //cout<<dp[i]<<" bit\n";
         }
         vector<bool> ans;
-        for(auto q:queries){
-            int left = q[0];
-            int right = q[1];
-            int c = 0;
-            for(int i=0; i<26; i++){
-                int total = count[right][i];
-                if(left>0)
-                    total -= count[left-1][i];
-                if(total%2)
-                    c++;
-            }
-            bool res = c/2 <= q[2];
-            ans.push_back(res);
+        for(auto &q:queries)
+        {
+            int end=q[1],st=q[0],k=q[2];
+            bitset<26> res=st==0?dp[end]:dp[end]^dp[st-1];
+            //cout<<res.count()<<"\n";
+            ans.push_back(res.count()/2<=k?true:false);
         }
         return ans;
     }
