@@ -1,36 +1,36 @@
 class Solution {
 public:
-    int calculate(string s) {
-        stack<pair<int,int>> st;
+    
+    int solve(string& s, int& i){
         int n = s.size();
-        int i = 0;
-        int sum = 0;
+        int res = 0;
+        int num = 0;
         int sign = 1;
-        while(i<n){
+        while(i < n){
             if(isdigit(s[i])){
-                int curr = 0;
-                while(i<n && isdigit(s[i])){
-                    curr  = curr*10 + (s[i]-'0');
-                    i++;
-                }
-                sum += sign*curr;
-                sign = 1;
-                i--;
+                num = num*10 + (s[i]-'0');
             }
             else if(s[i] == '('){
-                st.push({sum,sign});
-                sum = 0;
-                sign = 1;
+                i++;
+                num = solve(s,i);
             }
-            else if(s[i] == '-')
-                sign *= -1;
             else if(s[i] == ')'){
-                auto [res1,sign1] = st.top();
-                st.pop();
-                sum = res1+sum*sign1;
+                res = res + num*sign;
+                num = 0;
+                return res;
+            }
+            else if(s[i] == '+' or s[i] == '-'){
+                res += num*sign;
+                num = 0;
+                sign = s[i]=='+'?1:-1;
             }
             i++;
         }
-        return sum;
+        return res + sign*num;
+    }
+    
+    int calculate(string s) {
+        int i = 0;
+        return solve(s,i);
     }
 };
