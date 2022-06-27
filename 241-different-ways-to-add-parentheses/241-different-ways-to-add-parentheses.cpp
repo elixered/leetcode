@@ -5,7 +5,10 @@ public:
         return op=='*'?a*b:op=='+'?a+b:a-b;
     }
     
+   unordered_map<string,vector<int>> mp;
+    
     vector<int> diffWaysToCompute(string s) {
+        if(mp.count(s)) return mp[s];
         int n = s.size();
         vector<int> ans;
         for(int i=0; i<n; i++){
@@ -21,6 +24,6 @@ public:
         }
         if(ans.empty())
             ans.push_back(stoi(s));
-        return ans;
+        return mp[s] = ans;
     }
 };
