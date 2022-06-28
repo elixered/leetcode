@@ -1,24 +1,24 @@
 class Solution {
 public:
     
-    unordered_map<int,int> mp;
-    unordered_map<int,unordered_map<int,bool>> dp;
-    int solve(vector<int>& stones, int idx, int maxjump){
-        if(idx == stones.size()-1) return true;
-        if(dp[idx].find(maxjump)!=dp[idx].end()) return dp[idx][maxjump];
-        for(int jump=maxjump-1; jump<=maxjump+1; jump++){
-            if(jump<=0) continue;
-            if(mp.find(stones[idx]+jump)!=mp.end())
-                if(solve(stones,mp[stones[idx]+jump],jump))
-                    return dp[idx][maxjump] = true;
-        }
-        return dp[idx][maxjump] = false;
+unordered_map<int, bool> dp;
+
+bool canCross(vector<int>& stones, int pos = 0, int k = 0) {
+    int key = pos | k << 11;
+
+    if (dp.count(key) > 0)
+        return dp[key];
+
+    for (int i = pos + 1; i < stones.size(); i++) {
+        int gap = stones[i] - stones[pos];
+        if (gap < k - 1)
+            continue;
+        if (gap > k + 1)
+            return dp[key] = false;
+        if (canCross(stones, i, gap))
+            return dp[key] = true;
     }
-    
-    bool canCross(vector<int>& stones) {
-        if(stones[1]!=1) return false;
-        for(int i=0; i<stones.size(); ++i)
-            mp[stones[i]] = i;
-        return solve(stones,1,1);
-    }
+
+    return dp[key] = (pos == stones.size() - 1);
+}
 };
