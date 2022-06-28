@@ -2,7 +2,6 @@ class Solution {
 public:
     
     int m,n;
-    set<vector<int>> visited;
     bool valid(int x, int y){
         return x>=0 && y>=0 && x<m && y<n;
     }
@@ -24,16 +23,18 @@ public:
         m = maze.size();
         n = maze[0].size();
         vector<vector<int>> dir = {{-1,0},{1,0},{0,-1},{0,1}};
+        vector<vector<int>> dist(m,vector<int>(n,1e7));
         priority_queue<vector<int>,vector<vector<int>>,greater<vector<int>>> q;
         q.push({0,start[0],start[1]});
         while(!q.empty()){
             auto curr = q.top();
             q.pop();
             if(curr[1] == dest[0] && curr[2] == dest[1]) return curr[0];
-            visited.insert({curr[1],curr[2]});
+            if(dist[curr[1]][curr[2]] < curr[0]) continue;
             for(int i=0; i<4; ++i){
                 vector<int> end = getEnd(maze,{curr[1],curr[2]},dir[i]);
-                if(visited.find({end[1],end[2]}) == visited.end()){
+                if(dist[end[1]][end[2]] > curr[0]+end[0]){
+                    dist[end[1]][end[2]] = curr[0]+end[0];
                     q.push({curr[0]+end[0],end[1],end[2]});
                 }
             }
