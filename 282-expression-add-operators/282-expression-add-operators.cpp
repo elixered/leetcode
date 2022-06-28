@@ -1,32 +1,34 @@
 class Solution {
 public:
-    vector<string> ans;
-    string s;
-    int target;
-    vector<string> addOperators(string s, int target) {
-        this->s = s;
-        this->target = target;
-        backtrack( 0, "", 0, 0);
-        return ans;
-    }
-    void backtrack(int i, const string& path, long resSoFar, long prevNum) {
-        if (i == s.length()) {
-            if (resSoFar == target) ans.push_back(path);
+    
+    int goal;
+    
+    void solve(const string& nums, string s, int idx, long curval, long last, vector<string>& ans){
+        if(idx >= nums.size()){
+            if(curval == goal)
+                ans.push_back(s);
             return;
         }
-        string numStr;
         long num = 0;
-        for (int j = i; j < s.length(); j++) {
-            if (j > i && s[i] == '0') break; // Skip leading zero number
-            numStr += s[j];
-            num = num * 10 + s[j] - '0';
-            if (i == 0) {
-                backtrack(j + 1, path + numStr, num, num); // First num, pick it without adding any operator!
-            } else {
-                backtrack(j + 1, path + "+" + numStr, resSoFar + num, num);
-                backtrack(j + 1, path + "-" + numStr, resSoFar - num, -num);
-                backtrack(j + 1, path + "*" + numStr, resSoFar - prevNum + prevNum * num, prevNum * num); // Can imagine with example: 1-2*3
+        string numstr;
+        for(int i=idx; i<nums.size(); ++i){
+            if(i>idx && nums[idx]=='0') return;
+            numstr += nums[i];
+            num = num*10 + (nums[i]-'0');
+            if(idx==0)
+                solve(nums,to_string(num),i+1,num,num,ans);
+            else{
+                solve(nums,s+"+"+numstr,i+1,curval+num,num,ans);
+                solve(nums,s+"-"+numstr,i+1,curval-num,-num,ans);
+                solve(nums,s+"*"+numstr,i+1,curval-last+last*num,last*num,ans);
             }
         }
+    }
+    
+    vector<string> addOperators(string& num, int target) {
+        vector<string> ans;
+        goal = target;
+        solve(num,"",0,0,0,ans);
+        return ans;
     }
 };
