@@ -64,10 +64,7 @@ public:
             curr = NULL;
             return {};
         }
-        if(curr->str != "")
-            q.push({curr->str,curr->count});
-        for(auto& e:curr->children)
-            dfs(e.second);
+        dfs(curr);
         vector<string> res;
         while (!q.empty() && res.size()<3){
             res.push_back(q.top().first);
