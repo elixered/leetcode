@@ -1,30 +1,20 @@
 class Solution {
 public:
     int racecar(int target) {
-        queue<vector<int>> todo;
-        todo.push({0, 1, 0}); // {pos, speed, steps}
-        while (!todo.empty()) {
-            vector<int> cur = todo.front();
-            todo.pop();
-            int pos = cur[0];
-            int speed = cur[1];
-            int steps = cur[2];
-            // If our position is target
-            if (pos == target) {
-                return steps;
+        vector<int> dp(target+1, INT_MAX);
+        int r = 1;
+        for (int i = 1; i <= target; i++) {
+            if (i == pow(2,r)-1) {
+                dp[i] = r;
+                r++;
             }
-            // Try A
-            if ((pos + speed <= 10000 && pos + speed > 0)) {
-                todo.push({pos + speed, speed * 2, steps + 1});
-            }
-            // Try R
-            if (speed > 0 && (pos + speed > target)) {
-                todo.push({pos, -1, steps + 1});
-            }
-            if (speed < 0 && (pos + speed < target)) {
-                todo.push({pos, 1, steps + 1});
+            else {
+                for (int j = 0; j < r-1; j++) {
+                    dp[i] = min(dp[i],r+j+1+dp[i-pow(2,r-1)+pow(2,j)]);
+                }
+                dp[i] = min(dp[i], r+1+dp[pow(2,r)-1-i]);
             }
         }
-        return -1;
+        return dp[target];
     }
 };
