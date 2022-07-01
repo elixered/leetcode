@@ -6,8 +6,7 @@ public:
             root->left = deleteNode(root->left,key);
         else if(key>root->val)
             root->right = deleteNode(root->right,key);
-        else
-        if(root->val==key) {
+        else{
             if(root->left==NULL && root->right==NULL){
                 delete root;
                 root = NULL;
@@ -29,7 +28,6 @@ public:
                 root->right = deleteNode(root->right,right->val);
             }
         }
-      
         return root;
     }
 };
