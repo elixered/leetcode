@@ -7,7 +7,7 @@ public:
             else it = -1;
         }
         int ans = 0;
-        map<int,int> mp;
+        unordered_map<int,int> mp;
         mp[0] = -1;
         int count = 0;
         for(int i=0; i<hours.size(); ++i){
