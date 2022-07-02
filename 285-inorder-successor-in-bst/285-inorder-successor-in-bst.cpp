@@ -9,14 +9,16 @@
  */
 class Solution {
 public:
-    
-    
     TreeNode* inorderSuccessor(TreeNode* root, TreeNode* p) {
-        if(!root) return NULL;
-        auto l = inorderSuccessor(root->left,p);
-        if(l) return l;
-        if(root->val > p->val) return root;
-        auto r = inorderSuccessor(root->right,p);
-        return r;
+        TreeNode* ans = NULL;
+        while(root!=NULL){
+            if(p->val >= root->val)
+                root = root->right;
+            else{
+                ans = root;
+                root = root->left;
+            }
+        }
+        return ans;
     }
 };
