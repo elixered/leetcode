@@ -9,9 +9,14 @@ public:
     
     int shortest(string word1, string word2) {
         int ans = INT_MAX;
-        for(auto it:mp[word1]){
-            for(auto it1:mp[word2])
-                ans = min(ans,(int)abs(it-it1));
+        auto& a = mp[word1];
+        auto& b = mp[word2];
+        int i=0,j=0;
+        while(i<a.size() && j<b.size()){
+            ans = min(ans,(int)abs(a[i]-b[j]));
+            if(a[i] < b[j])
+                i++;
+            else j++;
         }
         return ans;
     }
