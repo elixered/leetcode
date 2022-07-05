@@ -7,11 +7,11 @@ public:
         auto r = helper(root->right, res);
 
         int incrLen = 0, decrLen = 0;
-        incrLen = max(incrLen, l[0] && l[2] + 1 == root->val ? l[0] + 1 : 1);
-        incrLen = max(incrLen, r[0] && r[2] + 1 == root->val ? r[0] + 1 : 1);
+        incrLen = max(incrLen, l[2] + 1 == root->val ? l[0] + 1 : 1);
+        incrLen = max(incrLen, r[2] + 1 == root->val ? r[0] + 1 : 1);
         
-        decrLen = max(decrLen, l[1] && l[2] - 1 == root->val ? l[1] + 1 : 1);
-        decrLen = max(decrLen, r[1] && r[2] - 1 == root->val ? r[1] + 1 : 1);
+        decrLen = max(decrLen, l[2] - 1 == root->val ? l[1] + 1 : 1);
+        decrLen = max(decrLen, r[2] - 1 == root->val ? r[1] + 1 : 1);
 
         res = max(res, max(incrLen, decrLen));
 
