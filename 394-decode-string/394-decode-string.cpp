@@ -6,17 +6,16 @@ public:
         while(idx < s.size()){
             while(idx < s.size() && isalpha(s[idx]))
                 ans += s[idx++];
-            if(isdigit(s[idx])){
-                int curr = 0;
-                while(idx < s.size() && isdigit(s[idx]))
-                    curr = curr*10 + s[idx++]-'0';
-                ++idx;
-                string t = recur(s,idx);
-                ++idx;
-                while(curr-- > 0)
-                    ans += t;
-            }
-            else return ans;
+            int curr = 0;
+            while(idx < s.size() && isdigit(s[idx]))
+                curr = curr*10 + s[idx++]-'0';
+            if(s[idx]==']')
+                return ans;
+            ++idx;
+            string t = recur(s,idx);
+            ++idx;
+            while(curr-- > 0)
+                ans += t;
         }
         return ans;
     }
