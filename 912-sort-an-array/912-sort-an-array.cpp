@@ -2,7 +2,7 @@ class Solution {
 public:
     
     int partition(vector<int>& nums, int l, int r){
-        int sidx = l + (rand())%(r-l);
+        int sidx = l + (rand())%(r-l+1);
         swap(nums[r],nums[sidx]);
         int pidx = l;
         int pivot = nums[r];
