@@ -1,17 +1,10 @@
 class Solution {
 public:
-    unordered_map<int,int> mp;
-    int solve(int n){
-        if(mp.count(n)) return mp[n];
-        if(n==1) return 0;
-        if(n<1) return 1e5;
-        int ans = 1e5;
-        if(n%2==0)
-        ans = min(ans,solve(n/2)+1);
-        else ans = min({ans,solve(n/2+1)+2,solve(n-1)+1});
-        return mp[n] = ans;
-    }
-    int integerReplacement(int n) {
-        return solve(n);
+      int integerReplacement(int n) {
+        if(n==INT_MAX) return 32;
+        if (n <= 2) return n-1;
+        if (n == 3) return 2;
+        if (n % 2 == 0) return integerReplacement(n/2)+1;
+        else return (n&2) == 0 ? integerReplacement(n-1)+1 : integerReplacement(n+1)+1;
     }
 };
