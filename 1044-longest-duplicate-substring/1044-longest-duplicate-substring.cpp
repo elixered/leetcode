@@ -5,9 +5,8 @@ public:
         
         // pre-compute all pow(26, k), 0 < k < n module prime for rolling hash
         power = vector<long long>(n);
-        for(int i = 0; i < n; i++)  power[i] = (i == 0) ? 1 : (power[i-1] * 26) % prime;
+        for(int i = 0; i < n; i++)  power[i] = (i == 0) ? 1 : (power[i-1] * 31) % prime;
         
-        // binary search for length of longest substring cuz if duplicate substring of len k is present then substring of len k-1 would of course be present, so search for greater lengths
         string res;
         while(l <= r) {
             int mid = l + (r - l) / 2;
@@ -22,7 +21,6 @@ public:
     }
     
 private:
-    // (1e7 + 7) huge prime for avoiding hashing collisions
     int prime = pow(10,9)+7;
     vector<long long> power;
     
@@ -35,14 +33,14 @@ private:
         
         // compute hash value for first 'len' characters
         for(int i = 0; i < len; i++) {
-            curr = (curr * 26 + (s[i]-'a')) % prime;
+            curr = (curr * 31 + (s[i]-'a')) % prime;
         }
         hash[curr] = {0};   // map this initial hash value with index 0 (means substring of lenght 'len' starting at index 0)
         
         for(int i = len; i < n; i++) {
             // sliding window to maintain current substring's hash
             curr = ((curr - power[len-1] * (s[i-len]-'a')) % prime + prime) % prime;
-            curr = (curr * 26 + (s[i]-'a')) % prime;
+            curr = (curr * 31 + (s[i]-'a')) % prime;
             
             // if this new hash does not exist in map then store it with the new start index (i-len+1)
             if(hash.find(curr) == hash.end())   hash[curr] = {i-len+1};
