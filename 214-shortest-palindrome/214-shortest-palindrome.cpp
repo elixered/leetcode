@@ -1,21 +1,20 @@
 class Solution {
 public:
-    #define ll long long
     string shortestPalindrome(string s) {
         int n = s.size();
-        int p = 31, m = pow(10,9)+7;
-        ll h1 = 0, h2 = 0;
-        ll pow = 1;
-        int ans = -1;
-        for(int i=0; i<n; ++i){
-            h1 = (h1*p + (s[i]-'a'+1))%m;
-            h2 = (h2 + pow*(s[i]-'a'+1))%m;
-            pow = (pow*p)%m;
-            if(h1 == h2)
-                ans = i;
+        string rev(s);
+        reverse(rev.begin(),rev.end());
+        string s_new = s + "#" + rev;
+        int n_new = s_new.size();
+        vector<int> lps(n_new,0);
+        for(int i=1; i<n_new; ++i){
+            int j = lps[i-1];
+            while(j && s_new[i] != s_new[j])
+                j = lps[j-1];
+            if(s_new[i] == s_new[j])
+                j++;
+            lps[i] = j;
         }
-        string t = s;
-        reverse(t.begin(),t.end());
-        return t.substr(0,n-ans-1) + s;
+        return rev.substr(0,n-lps[n_new-1]) + s;
     }
 };
