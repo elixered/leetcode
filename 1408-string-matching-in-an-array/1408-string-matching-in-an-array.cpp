@@ -1,4 +1,8 @@
-vector<int> prefix(string text)
+
+
+class Solution {
+public:
+    vector<int> prefix(string text)
 {
     int n = text.size();
     vector<int> prefix(n,0);
@@ -36,9 +40,6 @@ bool kmp(string text,string pattern)
     return false;
 }
 
-
-class Solution {
-public:
     vector<string> stringMatching(vector<string>& words) {
         
         unordered_set<string> ans;
