@@ -31,9 +31,11 @@ public:
         }
         int l = lps[n-1];
         int count = INT_MAX;
-        for(int i=1; i<=l; ++i){
-            count = min(count,solve(a,b,i));
+        for(int i=l; i>=1; i--){
+            count = solve(a,b,i);
+            if(count != INT_MAX)
+                return count;
         }
-        return count == INT_MAX ? -1 : count;
+        return -1;
     }
 };
