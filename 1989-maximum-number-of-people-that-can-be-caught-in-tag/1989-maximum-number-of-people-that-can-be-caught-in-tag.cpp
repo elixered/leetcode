@@ -1,28 +1,27 @@
 class Solution {
 public:
     int catchMaximumAmountofPeople(vector<int>& team, int dist) {
-        deque<int> t0,t1;
-        int ans = 0;
-        for(int i=0; i<team.size(); ++i){
-            while(!t0.empty() && t0.front()+dist<i)
-                t0.pop_front();
-            while(!t1.empty() && t1.front()+dist<i)
-                t1.pop_front();
-            if(team[i] == 1){
-                if(!t0.empty()){
-                    ans++;
-                    t0.pop_front();
-                }
-                else t1.push_back(i);
-            }
-            else{
-                if(!t1.empty()){
-                    ans++;
-                    t1.pop_front();
-                }
-                else t0.push_back(i);
+        int i=findNext(team,-1,1), j=findNext(team,-1,0), cat=0;
+        
+        while( i<team.size()&&j<team.size() ){
+            if(j<i-dist){
+                j=findNext(team,j,0);
+            }else if(i+dist<j){
+                i=findNext(team,i,1);
+            }else{
+                cat++;
+                i=findNext(team,i,1);
+                j=findNext(team,j,0);
             }
         }
-        return ans;
+        
+        return cat;
+    }
+    
+private:
+    int findNext( vector<int>& team, int i, int t ){
+        i++;
+        while( i<team.size()&&team[i]!=t)   i++;
+        return i;
     }
 };
