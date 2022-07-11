@@ -1,41 +1,46 @@
 class Solution {
 public:
-    
-    int solve(string a, string b, int l){
-        string curr = b.substr(0,l);
-        int idx = l;
-        int count = 1;
-        while(idx < b.size()){
-            int j = 0;
-            while(idx < b.size() && j < a.size()){
-                curr += a[j++];
-                idx++;
+    int repeatedStringMatch(string A, string B) {
+        int a=A.size(),b=B.size();
+        vector<int>lps(b);
+       //Making LPS array using string 'B'
+	   lps[0]=0;
+        for(int j=0,i=1;i<b;)
+        {
+            if(B[i]==B[j])
+                lps[i++]=++j;
+            else if(j!=0)
+                j=lps[j-1];
+            else
+                lps[i++]=0;
+        }
+        
+        //Search pattern 'B' in string 'A' in a circular fashion
+		//variable 'i' represents the starting index of pattern 'B' in string 'A' 
+		//variable 'j' points to the current index in both strings 'A' and 'B'
+		//(i+j)%a represents circular next index in 'A', as if it were linearly repeted
+        for(int i=0,j=0;i<a;)
+        {
+            if(B[j]==A[(i+j)%a])
+                ++j;//check for next in both
+            if(j==b)//returns suitable answer
+            {
+                if((i+j)%a)
+                    return (i+j)/a+1;
+                return (i+j)/a;
             }
-            count++;
+            else if(i<a and B[j]!=A[(i+j)%a])
+            {
+                if(j!=0)
+                {
+                    i+=(j-lps[j-1]);//updating 'i' here helps to keep pointed to the same position in 'A'
+                    j=lps[j-1];
+                }
+                else
+                    ++i;//even if no match found for the first letter of the pattern increment 'i'
+            }
+            
         }
-        return curr == b ? count: INT_MAX;
-    }
-    
-    int repeatedStringMatch(string a, string b) {
-        string s = b+"#"+a;
-        int n = s.size();
-        vector<int> lps(n,0);
-        for(int i=1; i<n; ++i){
-            int j = lps[i-1];
-            while(j && s[i] != s[j])
-                j = lps[j-1];
-            if(s[i] == s[j])
-                j++;
-            lps[i] = j;
-            if(lps[i] >= b.size()) return 1;
-        }
-        int l = lps[n-1];
-        int count = INT_MAX;
-        for(int i=l; i>=1; i--){
-            count = solve(a,b,i);
-            if(count != INT_MAX)
-                return count;
-        }
-        return -1;
+        return -1;//if not possible to represent as multiple of 'A' return '-1'
     }
 };
