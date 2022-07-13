@@ -5,7 +5,7 @@ public:
         if(n<3) return n;
         int ans = 0;
         for(int i=0; i<n; ++i){
-            map<pair<int,int>,set<int>> mp;
+            unordered_map<string,int> mp;
             for(int j=0; j<n; ++j){
                 if(i==j) continue;
                 int dx = points[j][0] - points[i][0];
@@ -13,11 +13,10 @@ public:
                 int dz = gcd(dx,dy);
                 dx /= dz;
                 dy /= dz;
-                mp[{dx,dy}].insert(i);
-                mp[{dx,dy}].insert(j);
-                ans = max(ans,(int)mp[{dx,dy}].size());
+                mp[to_string(dx)+"_"+to_string(dy)]++;
+                ans = max(ans,mp[to_string(dx)+"_"+to_string(dy)]);
             }
         }
-        return ans;
+        return ans+1;
     }
 };
