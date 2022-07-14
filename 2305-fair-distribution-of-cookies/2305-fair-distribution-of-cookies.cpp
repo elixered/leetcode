@@ -23,6 +23,8 @@ public:
             v[i] += cookies[idx];
             solve(cookies,idx+1,k,v);
             v[i] -= cookies[idx];
+            if(v[i] == 0)
+                break;
         }
     }
     
