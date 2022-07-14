@@ -1,6 +1,8 @@
 class Solution {
 public:
+    map<vector<int>,int> mp;
     int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        if(mp.count(needs)) return mp[needs];
         int bestPrice = calculateWOOffers(price, needs);
         for (const auto& sp : special) {
             substractOffer(sp, needs);
@@ -11,7 +13,7 @@ public:
             addOffer(sp, needs);
         }
 
-        return bestPrice;
+        return mp[needs] = bestPrice;
     }
     
     int calculateWOOffers(const vector<int>& price, const vector<int>& needs) {
