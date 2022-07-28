@@ -12,28 +12,28 @@
 class Solution {
 public:
     
-    bool check(vector<int>& cnt){
+    bool check(int& cnt){
         int t = 0;
         for(int i=1; i<=9; ++i)
-            if(cnt[i]%2)
+            if(cnt&(1<<i))
                 ++t;
         return t<2;
     }
     
-    int solve(TreeNode* root, vector<int>& cnt){
+    int solve(TreeNode* root, int& cnt){
         if(!root) return 0;
         int ans = 0;
-        cnt[root->val]++;
+        cnt ^= (1<<(root->val));
         ans += solve(root->left,cnt);
         ans += solve(root->right,cnt);
         if(!root->left && !root->right && check(cnt))
             ++ans;
-        cnt[root->val]--;
+        cnt ^= (1<<(root->val));
         return ans;
     }
     
     int pseudoPalindromicPaths (TreeNode* root) {
-        vector<int> cnt(10,0);
+        int cnt = 0;
         return solve(root,cnt);
     }
 };
