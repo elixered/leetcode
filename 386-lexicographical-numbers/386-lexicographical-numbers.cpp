@@ -1,18 +1,20 @@
 class Solution {
 public:
-    vector<int> ans;
-    
-    void solve(int curr, int n){
-        if(curr > n or ans.size() == n)
-            return;
-        ans.push_back(curr);
-        solve(curr*10,n);
-        if(curr%10 != 9)
-            solve(curr+1,n);
-    }
-    
     vector<int> lexicalOrder(int n) {
-        solve(1,n);
+        int curr = 1;
+        vector<int> ans(n);
+        for(int i=0; i<n; ++i){
+            ans[i] = curr;
+            if(curr*10 <= n)
+                curr *= 10;
+            else{
+                if(curr >= n)
+                    curr /= 10;
+                curr++;
+                while(curr % 10 == 0)
+                    curr /= 10;
+            }
+        }
         return ans;
     }
 };
