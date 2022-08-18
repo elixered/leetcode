@@ -2,6 +2,12 @@ class Solution {
 public:
     int cherryPickup(vector<vector<int>>& grid) {
         int n = grid.size();
+        for(int i=0; i<n; ++i){
+            for(int j=0; j<n; ++j){
+                if(grid[i][j] > 1)
+                    grid[i][j] = 0;
+            }
+        }
         vector<vector<vector<int>>> dp(n, vector<vector<int>>(n, vector<int>(n, -1)));
         int cherries = memoization(grid, dp, 0, 0, 0, 0);
         return cherries <= 0 ? 0 : cherries;
@@ -12,11 +18,11 @@ public:
         if(row1 >= n || row2 >= n || col1 >= n || col2 >= n || grid[row1][col1] == -1 || grid[row2][col2] == -1)
             return -1e9;
         
-        if(row1 == n-1 && col1 == n-1) return grid[row1][col1];
+        if(row1 == n-1 && col1 == n-1) return (grid[row1][col1] == 1); 
         if(dp[row1][col1][col2] != -1) return dp[row1][col1][col2];
 
-        int currSum = grid[row1][col1];
-        if(row1 != row2) currSum += grid[row2][col2];
+        int currSum = (grid[row1][col1] == 1); 
+        if(row1 != row2) currSum += (grid[row2][col2] == 1);
         
         int downdown = memoization(grid, dp, row1+1, col1, row2+1, col2);
         int downright = memoization(grid, dp, row1+1, col1, row2, col2+1);
