@@ -1,24 +1,19 @@
 class Solution {
 public:
     int minIncrementForUnique(vector<int>& nums) {
-        vector<int> map(100001,0);
-        for(auto it:nums)
-            map[it]++;
-        int idx = 0;
-        for(int i=0; i<100001; i++)
-        {
-            while(map[i]>0)
-            {
-                map[i]--;
-                nums[idx++] = i;
-            }
-        }
+        sort(begin(nums),end(nums));
+        int n = nums.size();
         int ans = 0;
-        int need = 0;
-        for(auto it:nums)
-        {
-            ans += max(need-it,0);
-            need = max(it,need)+1;
+        set<int> taken;
+        taken.insert(nums[0]);
+        for(int i=1; i<n; ++i){
+            if(taken.count(nums[i])){
+                int x = *taken.rbegin() - nums[i] + 1;
+                taken.insert(nums[i] + x);
+                ans += x;
+            }
+            else
+                taken.insert(nums[i]);
         }
         return ans;
     }
