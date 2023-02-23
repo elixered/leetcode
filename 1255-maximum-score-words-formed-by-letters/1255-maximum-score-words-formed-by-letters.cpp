@@ -1,12 +1,15 @@
 class Solution {
 public:
-    int mx = 0;
-    
-    void solve(vector<string>& words, int idx, multiset<char> st, vector<int>& score, int curr){
+    unordered_map<int,unordered_map<string,int>> mp;
+    int solve(vector<string>& words, int idx, multiset<char> st, vector<int>& score){
         if(idx == words.size()){
-            mx = max(mx,curr);
-            return;
+            return 0;
         }
+        string s;
+        for(auto it:st)
+            s.push_back(it);
+        if(mp[idx].count(s)) return mp[idx][s];
+        int mx = 0;
         auto word =  words[idx];
         auto stc = st;
         int val = 0;
@@ -16,17 +19,15 @@ public:
                 val += score[c-'a'];
             }
             else{
-                solve(words,idx+1,stc,score,curr);
-                return;
+                return solve(words,idx+1,stc,score);
             }
         }
-        solve(words,idx+1,stc,score,curr);
-        solve(words,idx+1,st,score,curr+val);
+        mx = max(solve(words,idx+1,st,score)+val,solve(words,idx+1,stc,score));
+        return mp[idx][s] = mx;
     }
     
     int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
         multiset<char> st(begin(letters),end(letters));
-        solve(words,0,st,score,0);
-        return mx;
+        return solve(words,0,st,score);
     }
 };
