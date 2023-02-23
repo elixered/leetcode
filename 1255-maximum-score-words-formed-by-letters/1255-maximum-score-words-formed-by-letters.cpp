@@ -1,33 +1,19 @@
 class Solution {
 public:
-    unordered_map<int,unordered_map<string,int>> mp;
-    int solve(vector<string>& words, int idx, multiset<char> st, vector<int>& score){
-        if(idx == words.size()){
-            return 0;
-        }
-        string s;
-        for(auto it:st)
-            s.push_back(it);
-        if(mp[idx].count(s)) return mp[idx][s];
-        int mx = 0;
-        auto word =  words[idx];
-        auto stc = st;
-        int val = 0;
-        for(auto c:word){
-            if(st.find(c) != st.end()){
-                st.erase(st.find(c));
-                val += score[c-'a'];
-            }
-            else{
-                return solve(words,idx+1,stc,score);
-            }
-        }
-        mx = max(solve(words,idx+1,st,score)+val,solve(words,idx+1,stc,score));
-        return mp[idx][s] = mx;
+int dfs(vector<string>& ws, vector<int> &cnt, vector<int> &score, int i) {
+    if (i >= ws.size()) return 0;
+    auto skipGain = dfs(ws, cnt, score, i + 1), gain = 0, formed = 1;
+    vector<int> cnt1(begin(cnt), end(cnt));
+    for (auto ch : ws[i]) {
+        if (--cnt1[ch - 'a'] < 0) formed = 0;
+        gain += score[ch - 'a'];
     }
-    
-    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
-        multiset<char> st(begin(letters),end(letters));
-        return solve(words,0,st,score);
-    }
+    return max(skipGain, formed ? 
+        gain + dfs(ws, cnt1, score, i + 1) : 0);
+}
+int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+    vector<int> cnt(26);
+    for (auto ch : letters) ++cnt[ch - 'a'];
+    return dfs(words, cnt, score, 0);
+}
 };
